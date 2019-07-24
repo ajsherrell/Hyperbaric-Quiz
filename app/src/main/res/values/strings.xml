@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HyperbaricQuiz</string>
+    <string name="quiz_categories_description">Quiz Categories</string>
+</resources>
