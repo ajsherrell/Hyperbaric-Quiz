@@ -6,32 +6,29 @@ import android.os.Parcelable;
 public class QuizContent implements Parcelable {
 
     private String mCategory;
-    private String mId;
+    private int mId;
     private String mQuestion;
     private String mAnswerA;
     private String mAnswerB;
     private String mAnswerC;
-    private String mIsCorrect;
 
-    public QuizContent(String category, String id, String question, String answerA,
-                       String answerB, String answerC, String isCorrect) {
+    public QuizContent(String category, int id, String question, String answerA,
+                       String answerB, String answerC) {
         this.mCategory = category;
         this.mId = id;
         this.mQuestion = question;
         this.mAnswerA = answerA;
         this.mAnswerB = answerB;
         this.mAnswerC = answerC;
-        this.mIsCorrect = isCorrect;
     }
 
     protected QuizContent(Parcel in) {
         mCategory = in.readString();
-        mId = in.readString();
+        mId = in.readInt();
         mQuestion = in.readString();
         mAnswerA = in.readString();
         mAnswerB = in.readString();
         mAnswerC = in.readString();
-        mIsCorrect = in.readString();
     }
 
     public static final Creator<QuizContent> CREATOR = new Creator<QuizContent>() {
@@ -54,12 +51,11 @@ public class QuizContent implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mCategory);
-        dest.writeString(mId);
+        dest.writeInt(mId);
         dest.writeString(mQuestion);
         dest.writeString(mAnswerA);
         dest.writeString(mAnswerB);
         dest.writeString(mAnswerC);
-        dest.writeString(mIsCorrect);
     }
 
 
@@ -71,11 +67,11 @@ public class QuizContent implements Parcelable {
         this.mCategory = category;
     }
 
-    public String getId() {
+    public int getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.mId = id;
     }
 
@@ -109,13 +105,5 @@ public class QuizContent implements Parcelable {
 
     public void setAnswerC(String answerC) {
         this.mAnswerC = answerC;
-    }
-
-    public String getIsCorrect() {
-        return mIsCorrect;
-    }
-
-    public void setIsCorrect(String isCorrect) {
-        this.mIsCorrect = isCorrect;
     }
 }

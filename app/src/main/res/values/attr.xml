@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--for two pane devices. default is false-->
+    <bool name="isTwoPane">false</bool>
+
+    <!--is the answer correct? default is true-->
+    <bool name="isCorrect">true</bool>
+
+</resources>
