@@ -4,4 +4,8 @@
     <dimen name="card_elevation">1dp</dimen>
     <dimen name="card_max_elevation">2dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="pass_fail_size">40sp</dimen>
+    <dimen name="category_size">40sp</dimen>
+    <dimen name="percentage_size">50sp</dimen>
+    <dimen name="passing_score_size">20sp</dimen>
 </resources>

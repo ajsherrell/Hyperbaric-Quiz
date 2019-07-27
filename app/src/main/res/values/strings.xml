@@ -7,4 +7,11 @@
     <string name="answer_a">This is answer A</string>
     <string name="question_one">This is a question?</string>
     <string name="id_one">1</string>
+    <string name="pass_fail_text">You Passed!</string>
+    <string name="score_text">Score:</string>
+    <string name="category_name">Physics</string>
+    <string name="percent_text">85%</string>
+    <string name="passing_score_text">Passing score is 70%.</string>
+    <string name="review_button">Review</string>
+    <string name="home_button">Home</string>
 </resources>
