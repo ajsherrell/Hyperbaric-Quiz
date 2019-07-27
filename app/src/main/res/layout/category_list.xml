@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        tools:src="@drawable/ic_stat_name"
         android:contentDescription="@string/quiz_categories_description" />
 
 </android.support.v7.widget.CardView>

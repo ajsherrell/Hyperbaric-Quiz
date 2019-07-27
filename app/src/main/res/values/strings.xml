@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">HyperbaricQuiz</string>
     <string name="quiz_categories_description">Quiz Categories</string>
+    <string name="next_button">Next</string>
+    <string name="answer_c">This is answer C</string>
+    <string name="answer_b">This is answer B</string>
+    <string name="answer_a">This is answer A</string>
+    <string name="question_one">This is a question?</string>
+    <string name="id_one">1</string>
 </resources>
