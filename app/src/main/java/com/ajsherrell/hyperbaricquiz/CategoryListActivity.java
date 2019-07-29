@@ -1,17 +1,86 @@
 package com.ajsherrell.hyperbaricquiz;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class CategoryListActivity extends AppCompatActivity {
+import com.ajsherrell.hyperbaricquiz.Constants.ClickListener;
+import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
+import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class CategoryListActivity extends AppCompatActivity
+    implements ClickListener.OnItemClickListener {
+
+    //key for intents
+    public static final String CATEGORY_KEY = "category_key";
+
+    // booleans
+    private boolean twoPane;
+    private boolean correct;
+
+    //model var
+    private QuizContent quizContent;
+
+    //recycler
+    RecyclerView listRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //bundle to save place
+        Bundle listBundle = getIntent().getExtras();
+        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
+            quizContent = listBundle.getParcelable(CATEGORY_KEY);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
+                    Toast.LENGTH_LONG).show();
+            finish();
+        }
+
         setContentView(R.layout.category_list);
+
+        //two pane devices
+        twoPane = getResources().getBoolean(R.bool.isTwoPane);
+        if (twoPane) {
+            //TODO: write two pane logic with savedInstanceState.
+        }
+
+        //action bar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.app_name);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        setupRecyclerView();
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private void setupRecyclerView() {
+        GridLayoutManager categoryLayoutManager = new GridLayoutManager(this);
+        listRecyclerView.setLayoutManager(categoryLayoutManager);
+        listRecyclerView.setAdapter(new QuizAdapter(quizContent,
+                new ClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(QuizContent position) {
+                        //TODO: make intent method
+                    }
+                }));
+    }
+
+    //TODO: make intent method with bundle.
 
     // menu
 
@@ -40,5 +109,10 @@ public class CategoryListActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(QuizContent position) {
+
     }
 }

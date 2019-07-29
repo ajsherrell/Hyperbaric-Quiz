@@ -17,4 +17,5 @@
     <string name="menu_about">About</string>
     <string name="menu_high_scores">High Scores</string>
     <string name="menu_exam_ready">Exam Ready</string>
+    <string name="load_failure">Failed to load content!</string>
 </resources>
