@@ -1,8 +1,12 @@
 package com.ajsherrell.hyperbaricquiz;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -69,7 +73,7 @@ public class CategoryListActivity extends AppCompatActivity
     }
 
     private void setupRecyclerView() {
-        GridLayoutManager categoryLayoutManager = new GridLayoutManager(this);
+        GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         listRecyclerView.setLayoutManager(categoryLayoutManager);
         listRecyclerView.setAdapter(new QuizAdapter(quizContent,
                 new ClickListener.OnItemClickListener() {
@@ -114,5 +118,26 @@ public class CategoryListActivity extends AppCompatActivity
     @Override
     public void onItemClick(QuizContent position) {
 
+    }
+
+    private int numColumns() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        // change this divider to adjust the size of poster
+        int divider = 500;
+        int width = metrics.widthPixels;
+        int columns = width / divider;
+        if (columns < 2) return 2;
+        return columns;
+    }
+
+    // referenced https://stackoverflow.com/questions/1560788/how-to-check-internet-access-on-android-inetaddress-never-times-out
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            return netInfo != null && netInfo.isConnectedOrConnecting();
+        }
+        return false;
     }
 }

@@ -63,7 +63,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
         QuizContent quizContent = quizList.get(position);
         String CATEGORY_IMAGE = "assets?";
-        //TODO: get image array above.
+        //TODO: get image array above, or add them to JSON
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
             Picasso.with(mContext)
                     .load(CATEGORY_IMAGE.trim())

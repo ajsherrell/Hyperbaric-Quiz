@@ -8,4 +8,5 @@
     <dimen name="category_size">40sp</dimen>
     <dimen name="percentage_size">50sp</dimen>
     <dimen name="passing_score_size">20sp</dimen>
+    <dimen name="rv_margin">8dp</dimen>
 </resources>
