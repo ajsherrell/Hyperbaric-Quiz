@@ -5,30 +5,26 @@ import android.os.Parcelable;
 
 public class QuizContent implements Parcelable {
 
-    private String mCategory;
+    private String mTitle;
     private int mId;
     private String mQuestion;
-    private String mAnswerA;
-    private String mAnswerB;
-    private String mAnswerC;
+    private String mAnswer;
+    private String mImage;
 
-    public QuizContent(String category, int id, String question, String answerA,
-                       String answerB, String answerC) {
-        this.mCategory = category;
+    public QuizContent(String title, int id, String question, String answer, String image) {
+        this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
-        this.mAnswerA = answerA;
-        this.mAnswerB = answerB;
-        this.mAnswerC = answerC;
+        this.mAnswer = answer;
+        this.mImage = image;
     }
 
     protected QuizContent(Parcel in) {
-        mCategory = in.readString();
+        mTitle = in.readString();
         mId = in.readInt();
         mQuestion = in.readString();
-        mAnswerA = in.readString();
-        mAnswerB = in.readString();
-        mAnswerC = in.readString();
+        mAnswer = in.readString();
+        mImage = in.readString();
     }
 
     public static final Creator<QuizContent> CREATOR = new Creator<QuizContent>() {
@@ -50,21 +46,20 @@ public class QuizContent implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mCategory);
+        dest.writeString(mTitle);
         dest.writeInt(mId);
         dest.writeString(mQuestion);
-        dest.writeString(mAnswerA);
-        dest.writeString(mAnswerB);
-        dest.writeString(mAnswerC);
+        dest.writeString(mAnswer);
+        dest.writeString(mImage);
     }
 
 
-    public String getCategory() {
-        return mCategory;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setCategory(String category) {
-        this.mCategory = category;
+    public void setTitle(String title) {
+        this.mTitle = title;
     }
 
     public int getId() {
@@ -83,27 +78,19 @@ public class QuizContent implements Parcelable {
         this.mQuestion = question;
     }
 
-    public String getAnswerA() {
-        return mAnswerA;
+    public String getAnswer() {
+        return mAnswer;
     }
 
-    public void setAnswerA(String answerA) {
-        this.mAnswerA = answerA;
+    public void setAnswer(String answer) {
+        this.mAnswer = answer;
     }
 
-    public String getAnswerB() {
-        return mAnswerB;
+    public String getImage() {
+        return mImage;
     }
 
-    public void setAnswerB(String answerB) {
-        this.mAnswerB = answerB;
-    }
-
-    public String getAnswerC() {
-        return mAnswerC;
-    }
-
-    public void setAnswerC(String answerC) {
-        this.mAnswerC = answerC;
+    public void setImage(String image) {
+        this.mImage = image;
     }
 }
