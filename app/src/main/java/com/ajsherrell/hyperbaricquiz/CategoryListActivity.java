@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ajsherrell.hyperbaricquiz.Constants.ClickListener;
@@ -26,10 +27,12 @@ public class CategoryListActivity extends AppCompatActivity
 
     // booleans
     private boolean twoPane;
-    private boolean correct;
 
     //model var
     private QuizContent quizContent;
+
+    // images
+    private ImageView imageView;
 
     //recycler
     RecyclerView listRecyclerView;

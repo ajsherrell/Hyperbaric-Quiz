@@ -11,6 +11,7 @@ public class QuestionDetails extends AppCompatActivity {
 
     //vars
     private TextView question;
+    private boolean correct;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -9,14 +9,12 @@ public class QuizContent implements Parcelable {
     private int mId;
     private String mQuestion;
     private String mAnswer;
-    private String mImage;
 
-    public QuizContent(String title, int id, String question, String answer, String image) {
+    public QuizContent(String title, int id, String question, String answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
         this.mAnswer = answer;
-        this.mImage = image;
     }
 
     protected QuizContent(Parcel in) {
@@ -24,7 +22,6 @@ public class QuizContent implements Parcelable {
         mId = in.readInt();
         mQuestion = in.readString();
         mAnswer = in.readString();
-        mImage = in.readString();
     }
 
     public static final Creator<QuizContent> CREATOR = new Creator<QuizContent>() {
@@ -50,7 +47,6 @@ public class QuizContent implements Parcelable {
         dest.writeInt(mId);
         dest.writeString(mQuestion);
         dest.writeString(mAnswer);
-        dest.writeString(mImage);
     }
 
 
@@ -84,13 +80,5 @@ public class QuizContent implements Parcelable {
 
     public void setAnswer(String answer) {
         this.mAnswer = answer;
-    }
-
-    public String getImage() {
-        return mImage;
-    }
-
-    public void setImage(String image) {
-        this.mImage = image;
     }
 }
