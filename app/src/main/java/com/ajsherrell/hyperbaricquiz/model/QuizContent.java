@@ -3,14 +3,21 @@ package com.ajsherrell.hyperbaricquiz.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class QuizContent implements Parcelable {
 
-    private String mTitle;
+    private List<String> mTitle;
     private int mId;
-    private String mQuestion;
-    private String mAnswer;
+    private List<String> mQuestion;
+    private List<String> mAnswer;
 
-    public QuizContent(String title, int id, String question, String answer) {
+    /**
+     * No args constructor for use in serialization
+     */
+    public QuizContent() {}
+
+    public QuizContent(List<String> title, int id, List<String> question, List<String> answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
@@ -18,10 +25,10 @@ public class QuizContent implements Parcelable {
     }
 
     protected QuizContent(Parcel in) {
-        mTitle = in.readString();
-        mId = in.readInt();
-        mQuestion = in.readString();
-        mAnswer = in.readString();
+        in.readList(this.mTitle, QuizContent.class.getClassLoader());
+        this.mId = in.readInt();
+        in.readList(this.mQuestion, QuizContent.class.getClassLoader());
+        in.readList(this.mAnswer, QuizContent.class.getClassLoader());
     }
 
     public static final Creator<QuizContent> CREATOR = new Creator<QuizContent>() {
@@ -43,42 +50,26 @@ public class QuizContent implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mTitle);
-        dest.writeInt(mId);
-        dest.writeString(mQuestion);
-        dest.writeString(mAnswer);
+        dest.writeList(this.mTitle);
+        dest.writeInt(this.mId);
+        dest.writeList(this.mQuestion);
+        dest.writeList(this.mAnswer);
     }
 
-
-    public String getTitle() {
+    public List<String> getTitle() {
         return mTitle;
-    }
-
-    public void setTitle(String title) {
-        this.mTitle = title;
     }
 
     public int getId() {
         return mId;
     }
 
-    public void setId(int id) {
-        this.mId = id;
-    }
-
-    public String getQuestion() {
+    public List<String> getQuestion() {
         return mQuestion;
     }
 
-    public void setQuestion(String question) {
-        this.mQuestion = question;
-    }
-
-    public String getAnswer() {
+    public List<String> getAnswer() {
         return mAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.mAnswer = answer;
-    }
 }
