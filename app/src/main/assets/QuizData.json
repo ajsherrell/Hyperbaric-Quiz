@@ -2,7 +2,7 @@
   "title": {
     "physics": [
       {
-        "id": "1",
+        "id": 1,
         "question": "This is a physics question?",
         "options": [
           "answerA",
@@ -12,7 +12,7 @@
         "answer": "answerB"
       },
       {
-        "id": "2",
+        "id": 2,
         "question": "This is a second physics question?",
         "options": [
           "answerA1",
@@ -24,7 +24,7 @@
     ],
     "pressure": [
       {
-      "id": "1",
+      "id": 1,
       "question": "This is question pressure?",
       "options": [
         "answer1",
@@ -34,7 +34,7 @@
         "answer": "answer2"
     },
       {
-        "id": "2",
+        "id": 2,
         "question": "This is pressure question 2",
         "options": [
           "answer1a",
