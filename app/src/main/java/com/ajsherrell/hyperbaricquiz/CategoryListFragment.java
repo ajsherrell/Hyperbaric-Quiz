@@ -1,6 +1,7 @@
 package com.ajsherrell.hyperbaricquiz;
 
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,8 @@ public class CategoryListFragment extends Fragment {
     TextView titleTextView;
     ImageView imageView;
 
+    AssetManager am; //TODO
+
     public CategoryListFragment() {
         // Required empty public constructor
     }
@@ -53,4 +56,6 @@ public class CategoryListFragment extends Fragment {
         return rootView;
     }
 
+
+    //TODO: switch statement for images with titles
 }

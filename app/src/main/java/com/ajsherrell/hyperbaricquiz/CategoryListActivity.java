@@ -102,7 +102,7 @@ public class CategoryListActivity extends AppCompatActivity
         listRecyclerView.setAdapter(new QuizAdapter(quizContentList, new OnItemClickListener() {
             @Override
             public void onItemClick(QuizContent position) {
-                makeList(position.getTitle());
+                makeList(quizContentList);
             }
         }));
     }
@@ -119,8 +119,8 @@ public class CategoryListActivity extends AppCompatActivity
                     .commit();
         } else {
             Intent intent = new Intent(this, QuestionDetails.class);
-            intent.putExtra(QuestionDetails.LIST_KEY, quizContentList);
-            intent.putExtra(QuestionDetails.LIST_ITEM_SELECTED, position);
+            intent.putExtra(QuestionDetails.LIST_KEY, (Parcelable) quizContentList);
+            intent.putExtra(QuestionDetails.LIST_ITEM_SELECTED, (Parcelable) position);
             startActivity(intent);
         }
     }
