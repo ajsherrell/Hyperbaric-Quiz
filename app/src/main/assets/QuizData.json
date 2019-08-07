@@ -4,40 +4,44 @@
       {
         "id": "1",
         "question": "This is a physics question?",
-        "answer": [
+        "options": [
           "answerA",
           "answerB",
           "answerC"
-        ]
+        ],
+        "answer": "answerB"
       },
       {
         "id": "2",
         "question": "This is a second physics question?",
-        "answer": [
+        "options": [
           "answerA1",
           "answerB2",
           "answerC2"
-        ]
+        ],
+        "answer": "answerA1"
       }
     ],
     "pressure": [
       {
       "id": "1",
       "question": "This is question pressure?",
-      "answer": [
+      "options": [
         "answer1",
         "answer2",
         "answer3"
-      ]
+      ],
+        "answer": "answer2"
     },
       {
         "id": "2",
         "question": "This is pressure question 2",
-        "answer": [
+        "options": [
           "answer1a",
           "answer2a",
           "answer3a"
-        ]
+        ],
+        "answer": "answer3a"
       }
     ]
   }
