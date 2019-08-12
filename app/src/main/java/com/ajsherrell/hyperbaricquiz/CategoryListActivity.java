@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,15 +13,17 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.ajsherrell.hyperbaricquiz.Constants.ClickListener.OnItemClickListener;
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,9 +44,13 @@ public class CategoryListActivity extends AppCompatActivity
     // images
     private ImageView imageView;
 
+    //text views
+    private TextView categoryTextView;
+
     //recycler
     RecyclerView listRecyclerView;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +65,11 @@ public class CategoryListActivity extends AppCompatActivity
             finish();
         }
 
-        setContentView(R.layout.category_list);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.app_name);
 
         //two pane devices
         twoPane = getResources().getBoolean(R.bool.isTwoPane);
@@ -79,12 +89,6 @@ public class CategoryListActivity extends AppCompatActivity
             twoPane = true;
         }
 
-        //action bar
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.app_name);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         setupRecyclerView();
     }
@@ -118,9 +122,9 @@ public class CategoryListActivity extends AppCompatActivity
                     .replace(R.id.question_detail_container, fragment)
                     .commit();
         } else {
-            Intent intent = new Intent(this, QuestionDetails.class);
-            intent.putExtra(QuestionDetails.LIST_KEY, (Parcelable) quizContentList);
-            intent.putExtra(QuestionDetails.LIST_ITEM_SELECTED, (Parcelable) position);
+            Intent intent = new Intent(this, QuestionDetailsActivity.class);
+            intent.putExtra(QuestionDetailsActivity.LIST_KEY, (Parcelable) quizContentList);
+            intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, (Parcelable) position);
             startActivity(intent);
         }
     }

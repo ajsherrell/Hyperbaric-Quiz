@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:listitem="@layout/question_detail"
-    tools:context=".QuestionDetails"
+    tools:context=".QuestionDetailsActivity"
     android:id="@+id/recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

@@ -49,7 +49,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
+        <RadioButton android:id="@+id/radio_A"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
@@ -57,14 +57,14 @@
             tools:text="@string/answer_a" />
 
         <RadioButton
-            android:id="@+id/radio1bAnswer"
+            android:id="@+id/radio_B"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
             tools:text="@string/answer_b" />
 
-        <RadioButton
+        <RadioButton android:id="@+id/radio_C"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"

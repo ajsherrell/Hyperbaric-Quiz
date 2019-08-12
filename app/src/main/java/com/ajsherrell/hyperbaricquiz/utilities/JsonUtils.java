@@ -3,7 +3,7 @@ package com.ajsherrell.hyperbaricquiz.utilities;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
-import android.widget.TextView;
+import android.util.Log;
 
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 
@@ -13,28 +13,36 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class JsonUtils {
 
     Context mContext;
-
-    //json vars
-    public String title;
-    public String
 
     private static final String TAG = JsonUtils.class.getSimpleName();
 
     //empty constructor
     private JsonUtils() {}
 
+    // json constants
+    private final static String TITLE = "title";
+    private final static String PHYSICS = "physics";
+    private final static String PRESSURE = "pressure";
+    private final static String ID = "id";
+    private final static String QUESTION = "question";
+    private final static String OPTIONS = "options";
+    private final static String ANSWER = "answer";
+
+
     // extract JSON from Assets folder with help from:
     //https://stackoverflow.com/questions/19945411/android-java-how-can-i-parse-a-local-json-file-from-assets-folder-into-a-listvi/19945484#19945484
-    public String loadJSONFromAsset(Context context) {
+    public String loadJSONFromAsset() {
+
         String json = null;
         try {
-            AssetManager assetManager = (AssetManager) context.getAssets();
+            AssetManager assetManager = (AssetManager) mContext.getAssets();
             InputStream is = assetManager.open("QuizData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -49,37 +57,69 @@ public class JsonUtils {
     }
 
     //parse the JSON
-    public ArrayList<QuizContent> parseJson(Context context, String quizJson) {
+    public static QuizContent parseJson(String quizJson) {
 
         // if the JSON string is empty or null, then return early
         if (TextUtils.isEmpty(quizJson)) {
             return null;
         }
-        //create an empty array list to add content to
-        ArrayList<QuizContent> data = new ArrayList<>();
-        String[] jsonResponse = null;
+
+        // declare local vars for json
+        JSONObject jsonObject;
+        String title;
+        String id = null;
+        List<String> array;
+        String question = null;
+        List<String> options = null;
+        String answer = null;
+
         try {
-            JSONObject baseObject = new JSONObject(loadJSONFromAsset(context));
-            //extract object "title" key from base object
-            JSONObject titleObject = baseObject.getJSONObject("title");
-            //extract array "physics" key from titleObject
-            JSONArray physicsArray = titleObject.getJSONArray("physics");
-            // add array to string[]
-            jsonResponse = new String[physicsArray.length()];
+            jsonObject = new JSONObject(quizJson);
 
-            // iterate through physicsArray
-            for (int i = 0; i < physicsArray.length(); i++) {
+            //get the base object
+            JSONObject main = jsonObject.getJSONObject(TITLE);
+            title = main.optString(TITLE);
 
-                // get single content in array index 0 in the list
-                JSONObject physicsId = physicsArray.getJSONObject(i);
-
-                //TODO: finish parsing json
+            // switch statement to find array category
+            switch (title) {
+                case PHYSICS:
+                    array = jsonArrayList(main.getJSONArray(PHYSICS));
+                    break;
+                case PRESSURE:
+                    array = jsonArrayList(main.getJSONArray(PRESSURE));
+                    break;
+                default:
+                    return null;
+            }
+            //loop through array
+            for (int i = 0; i < array.size(); i++) {
+                // get optStrings
+                JSONObject obj = new JSONObject(array.get(i));
+                id = obj.optString(ID);
+                question = obj.optString(QUESTION);
+                answer = obj.optString(ANSWER);
+                options = jsonArrayList(obj.getJSONArray(OPTIONS));
             }
 
+
         } catch (JSONException e) {
+            Log.d(TAG, "parseJson: not able to parse JSON!!!!!" + quizJson);
             e.printStackTrace();
+            return null;
         }
-        return jsonResponse;
+        return new QuizContent(title, id, question, options, answer);
+    }
+
+    private static List<String> jsonArrayList(JSONArray jsonArray) throws JSONException {
+        // declare arrayList from 0th index
+        List<String> arrayList = new ArrayList<>(0);
+
+        // loop through array
+        for (int i = 0; i < jsonArray.length(); i++) {
+            arrayList.add(jsonArray.optString(i));
+        }
+
+        return arrayList;
     }
 
 }

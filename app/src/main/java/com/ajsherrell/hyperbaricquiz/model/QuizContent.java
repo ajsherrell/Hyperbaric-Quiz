@@ -3,12 +3,16 @@ package com.ajsherrell.hyperbaricquiz.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONObject;
+
+import java.util.List;
+
 public class QuizContent implements Parcelable {
 
     private String mTitle;
-    private int mId;
+    private String mId;
     private String mQuestion;
-    private String mOptions;
+    private List<String> mOptions;
     private String mAnswer;
 
     /**
@@ -16,7 +20,7 @@ public class QuizContent implements Parcelable {
      */
     public QuizContent() {}
 
-    public QuizContent(String title, int id, String question, String options, String answer) {
+    public QuizContent(String title, String id, String question, List<String> options, String answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
@@ -26,9 +30,9 @@ public class QuizContent implements Parcelable {
 
     protected QuizContent(Parcel in) {
         mTitle = in.readString();
-        mId = in.readInt();
+        mId = in.readString();
         mQuestion = in.readString();
-        mOptions = in.readString();
+        in.readList(mOptions, QuizContent.class.getClassLoader());
         mAnswer = in.readString();
     }
 
@@ -52,9 +56,9 @@ public class QuizContent implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mTitle);
-        dest.writeInt(mId);
+        dest.writeString(mId);
         dest.writeString(mQuestion);
-        dest.writeString(mOptions);
+        dest.writeList(mOptions);
         dest.writeString(mAnswer);
     }
 
@@ -67,11 +71,11 @@ public class QuizContent implements Parcelable {
         this.mTitle = title;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.mId = id;
     }
 
@@ -83,11 +87,11 @@ public class QuizContent implements Parcelable {
         this.mQuestion = question;
     }
 
-    public String getOptions() {
+    public List<String> getOptions() {
         return mOptions;
     }
 
-    public void setOptions(String options) {
+    public void setOptions(List<String> options) {
         this.mOptions = options;
     }
 
