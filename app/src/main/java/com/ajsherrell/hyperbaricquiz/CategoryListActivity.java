@@ -6,29 +6,28 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.ajsherrell.hyperbaricquiz.Constants.ClickListener.OnItemClickListener;
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryListActivity extends AppCompatActivity
-    implements OnItemClickListener {
+public class CategoryListActivity extends AppCompatActivity {
 
     //key for intents
     public static final String CATEGORY_KEY = "category_key";
@@ -38,6 +37,9 @@ public class CategoryListActivity extends AppCompatActivity
 
     //model var
     private List<QuizContent> quizContentList;
+
+    //adapter reference
+    QuizAdapter adapter;
 
     Parcelable mSavedRecyclerLayout;
 
@@ -89,8 +91,9 @@ public class CategoryListActivity extends AppCompatActivity
             twoPane = true;
         }
 
-
-        setupRecyclerView();
+        listRecyclerView = findViewById(R.id.image_rv);
+        assert  listRecyclerView != null;
+        setupRecyclerView(listRecyclerView);
     }
 
     @Override
@@ -99,24 +102,19 @@ public class CategoryListActivity extends AppCompatActivity
         return true;
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
-        listRecyclerView.setLayoutManager(categoryLayoutManager);
-        listRecyclerView.setHasFixedSize(true);
-        listRecyclerView.setAdapter(new QuizAdapter(quizContentList, new OnItemClickListener() {
-            @Override
-            public void onItemClick(QuizContent position) {
-                makeList(quizContentList);
-            }
-        }));
+        recyclerView.setLayoutManager(categoryLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
     }
 
     //intent method with bundle.
     private void makeList(List<QuizContent> position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(CategoryListFragment.ARG_LIST_ID, position.get(0));
-            CategoryListFragment fragment = new CategoryListFragment();
+            args.putParcelable(QuestionDetailsFragment.ARG_LIST_ID, position.get(0));
+            QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.question_detail_container, fragment)

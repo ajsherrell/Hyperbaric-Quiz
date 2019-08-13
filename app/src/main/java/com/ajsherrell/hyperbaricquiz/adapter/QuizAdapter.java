@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ajsherrell.hyperbaricquiz.Constants;
 import com.ajsherrell.hyperbaricquiz.R;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.squareup.picasso.Picasso;
@@ -24,29 +23,38 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     private static final String TAG = QuizAdapter.class.getSimpleName();
 
     private Context mContext;
-    private Constants.ClickListener.OnItemClickListener onItemClickListener;
     private List<QuizContent> quizList;
 
-    public QuizAdapter(Context context, List<QuizContent> quizList, Constants.
-            ClickListener.OnItemClickListener onItemClickListener) {
+    // need a click listener interface
+    public static final class ClickListener {
+        public interface OnItemClickListener {
+            void onItemClick(int position);
+        }
+    }
+
+    private ClickListener.OnItemClickListener onItemClickListener;
+
+    public QuizAdapter(Context context, List<QuizContent> quizList,
+                       ClickListener.OnItemClickListener onItemClickListener) {
         this.mContext = context;
         this.quizList = quizList;
         this.onItemClickListener = onItemClickListener;
     }
 
     class QuizViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        RecyclerView recyclerView;
         ImageView imageView;
 
         public QuizViewHolder(View view) {
             super(view);
-            imageView = (ImageView) view.findViewById(R.id.category_image);
+            recyclerView = view.findViewById(R.id.image_rv);
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            onItemClickListener.onItemClick(quizList.get(position));
+            onItemClickListener.onItemClick(quizList.indexOf(position));
             Log.d(TAG, "onClick: this is onClick in Adapter at position: " + position);
         }
     }
@@ -61,9 +69,9 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
-        QuizContent quizContent = quizList.get(position);
-        String CATEGORY_IMAGE = "assets?";
+        String cTitle = quizList.get(position).getTitle();
         //TODO: get image array above, or add them to JSON
+        String CATEGORY_IMAGE = getImage(Integer.parseInt(cTitle));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
             Picasso.with(mContext)
                     .load(CATEGORY_IMAGE.trim())
@@ -86,5 +94,20 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     public void clear() {
         quizList.clear();
+    }
+
+    public String getImage(int image) {
+        String category = null;
+        switch (category) {
+            case "Physics":
+                image = R.drawable.physics;
+                break;
+            case "Pressure":
+                image = R.drawable.pressure;
+                break;
+            default:
+                Log.d(TAG, "getImage: no image!!!" + image);
+                return null;
+        }
     }
 }
