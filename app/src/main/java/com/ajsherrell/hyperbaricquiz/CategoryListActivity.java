@@ -29,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryListActivity extends AppCompatActivity {
 
+    private static final String TAG = CategoryListActivity.class.getSimpleName();
+
     //key for intents
     public static final String CATEGORY_KEY = "category_key";
 

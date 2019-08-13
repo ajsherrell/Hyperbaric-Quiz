@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ajsherrell.hyperbaricquiz.R;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
@@ -44,11 +45,14 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     class QuizViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView recyclerView;
         ImageView imageView;
+        TextView titleTextView;
 
         public QuizViewHolder(View view) {
             super(view);
             recyclerView = view.findViewById(R.id.image_rv);
             view.setOnClickListener(this);
+            titleTextView = view.findViewById(R.id.category_list_tv);
+            imageView = view.findViewById(R.id.category_image);
         }
 
         @Override
@@ -69,6 +73,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
+        holder.titleTextView.setText(quizList.get(position).getTitle());
         String cTitle = quizList.get(position).getTitle();
         //TODO: get image array above, or add them to JSON
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(cTitle)));
