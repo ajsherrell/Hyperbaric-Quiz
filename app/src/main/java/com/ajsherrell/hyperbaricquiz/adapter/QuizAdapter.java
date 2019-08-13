@@ -71,7 +71,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
         String cTitle = quizList.get(position).getTitle();
         //TODO: get image array above, or add them to JSON
-        String CATEGORY_IMAGE = getImage(Integer.parseInt(cTitle));
+        String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(cTitle)));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
             Picasso.with(mContext)
                     .load(CATEGORY_IMAGE.trim())
@@ -96,7 +96,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         quizList.clear();
     }
 
-    public String getImage(int image) {
+    public int getImage(int image) {
         String category = null;
         switch (category) {
             case "Physics":
@@ -107,7 +107,8 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
                 break;
             default:
                 Log.d(TAG, "getImage: no image!!!" + image);
-                return null;
+                return 0;
         }
+        return image; //TODO: test image log.
     }
 }
