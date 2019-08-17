@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -43,12 +41,6 @@ public class CategoryListActivity extends AppCompatActivity {
     QuizAdapter adapter;
 
     Parcelable mSavedRecyclerLayout;
-
-    // images
-    private ImageView imageView;
-
-    //text views
-    private TextView categoryTextView;
 
     //recycler
     RecyclerView listRecyclerView;
@@ -114,14 +106,14 @@ public class CategoryListActivity extends AppCompatActivity {
             public void onItemClick(int position) {
                 makeList(position);
             }
-        });
+        }));
     }
 
     //intent method with bundle.
     private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.ARG_LIST_ID, quizContentList.get(position).getTitle());
+            args.putParcelable(QuestionDetailsFragment.ARG_ITEM_ID, quizContentList.get(position));
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
