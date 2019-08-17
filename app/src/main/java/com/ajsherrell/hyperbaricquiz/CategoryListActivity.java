@@ -11,11 +11,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
@@ -38,7 +37,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private boolean twoPane;
 
     //model var
-    private List<QuizContent> quizContentList;
+    private  List<QuizContent> quizContentList;
 
     //adapter reference
     QuizAdapter adapter;
@@ -82,7 +81,9 @@ public class CategoryListActivity extends AppCompatActivity {
             if (savedInstanceState != null) {
                 mSavedRecyclerLayout = savedInstanceState.getParcelable(CATEGORY_KEY);
                 listRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayout);
-                makeList(quizContentList);
+            }
+            if (savedInstanceState == null && !quizContentList.isEmpty()) {
+                makeList(0);
             }
         }
 
@@ -108,14 +109,19 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new QuizAdapter(getApplicationContext(), quizContentList, new QuizAdapter.ClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                makeList(position);
+            }
+        });
     }
 
     //intent method with bundle.
-    private void makeList(List<QuizContent> position) {
+    private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.ARG_LIST_ID, position.get(0));
+            args.putParcelable(QuestionDetailsFragment.ARG_LIST_ID, quizContentList.get(position).getTitle());
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
@@ -124,7 +130,7 @@ public class CategoryListActivity extends AppCompatActivity {
         } else {
             Intent intent = new Intent(this, QuestionDetailsActivity.class);
             intent.putExtra(QuestionDetailsActivity.LIST_KEY, (Parcelable) quizContentList);
-            intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, (Parcelable) position);
+            intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, position);
             startActivity(intent);
         }
     }
@@ -156,11 +162,6 @@ public class CategoryListActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(QuizContent position) {
-
     }
 
     private int numColumns() {
