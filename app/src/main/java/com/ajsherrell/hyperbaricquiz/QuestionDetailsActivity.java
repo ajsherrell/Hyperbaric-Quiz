@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,6 +31,8 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     ViewPager quizViewPager;
 
     private List<QuizContent> quizContent;
+    private QuizContent content;
+    private int questionSelected;
 
     private Button submitButton;
     private Button nextButton;
@@ -75,21 +78,29 @@ public class QuestionDetailsActivity extends AppCompatActivity {
 
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setTitle(content.getTitle());
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        if (savedInstanceState == null) {
-            //create detail fragment and add it to the activity
-            // using a fragment transaction
-            Bundle arguments = new Bundle();
-            arguments.putString(QuestionDetailsFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(QuestionDetailsFragment.ARG_ITEM_ID));
-            QuestionDetailsFragment fragment = new QuestionDetailsFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.question_detail_container, fragment)
-                    .commit();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.containsKey(LIST_KEY) && bundle.containsKey(LIST_ITEM_SELECTED)) {
+            content = content.getParcelable(LIST_KEY);
+            questionSelected = bundle.getInt(LIST_ITEM_SELECTED);
+        } else {
+            Log.d(TAG, "onCreate: bundle error!!!!!" + content);
         }
+//        if (savedInstanceState == null) {
+//            //create detail fragment and add it to the activity
+//            // using a fragment transaction
+//            Bundle arguments = new Bundle();
+//            arguments.putString(QuestionDetailsFragment.ARG_ITEM_ID,
+//                    getIntent().getStringExtra(QuestionDetailsFragment.ARG_ITEM_ID));
+//            QuestionDetailsFragment fragment = new QuestionDetailsFragment();
+//            fragment.setArguments(arguments);
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.question_detail_container, fragment)
+//                    .commit();
+//        }
 
         //pager adapter implementation
         QuestionsFragmentPagerAdapter adapter = new QuestionsFragmentPagerAdapter(getApplicationContext(),
@@ -126,6 +137,13 @@ public class QuestionDetailsActivity extends AppCompatActivity {
 
             }
         });
+        quizViewPager.setCurrentItem(questionSelected);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
