@@ -73,8 +73,9 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
-        holder.titleTextView.setText(quizList.get(position).getTitle());
-        String cTitle = quizList.get(position).getTitle();
+        QuizContent content = quizList.get(position);
+        holder.titleTextView.setText(content.getTitle());
+        String cTitle = content.getTitle(position);
         //TODO: get image array above, or add them to JSON
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(cTitle)));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
@@ -84,6 +85,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
                     .error(R.drawable.ic_stat_name)
                     .into(holder.imageView);
         }
+
         Log.d(TAG, "onBindViewHolder: this is in the adapter: " + CATEGORY_IMAGE);
     }
 

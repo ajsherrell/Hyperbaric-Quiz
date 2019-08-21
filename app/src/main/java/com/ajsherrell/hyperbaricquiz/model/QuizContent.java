@@ -3,13 +3,12 @@ package com.ajsherrell.hyperbaricquiz.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONObject;
 
 import java.util.List;
 
 public class QuizContent implements Parcelable {
 
-    private String mTitle;
+    private List<String> mTitle;
     private String mId;
     private String mQuestion;
     private List<String> mOptions;
@@ -20,7 +19,7 @@ public class QuizContent implements Parcelable {
      */
     public QuizContent() {}
 
-    public QuizContent(String title, String id, String question, List<String> options, String answer) {
+    public QuizContent(List<String> title, String id, String question, List<String> options, String answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
@@ -29,7 +28,7 @@ public class QuizContent implements Parcelable {
     }
 
     protected QuizContent(Parcel in) {
-        mTitle = in.readString();
+        in.readList(mTitle, QuizContent.class.getClassLoader());
         mId = in.readString();
         mQuestion = in.readString();
         in.readList(mOptions, QuizContent.class.getClassLoader());
@@ -55,7 +54,7 @@ public class QuizContent implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mTitle);
+        dest.writeList(mTitle);
         dest.writeString(mId);
         dest.writeString(mQuestion);
         dest.writeList(mOptions);
@@ -63,11 +62,11 @@ public class QuizContent implements Parcelable {
     }
 
 
-    public String getTitle() {
+    public List<String> getTitle() {
         return mTitle;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(List<String> title) {
         this.mTitle = title;
     }
 

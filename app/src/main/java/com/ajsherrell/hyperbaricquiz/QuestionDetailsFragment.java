@@ -65,8 +65,6 @@ public class QuestionDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_question_details, container, false);
         id = (TextView) view.findViewById(R.id.id);
         question = (TextView) view.findViewById(R.id.question);
-        submit = (Button) view.findViewById(R.id.submit_button);
-        //TODO: add previous button
         radioButtonA = (RadioButton) view.findViewById(R.id.radio_A);
         radioButtonB = (RadioButton) view.findViewById(R.id.radio_B);
         radioButtonC = (RadioButton) view.findViewById(R.id.radio_C);
@@ -82,14 +80,7 @@ public class QuestionDetailsFragment extends Fragment {
             if (question != null) {
                 question.setText(quizContentList.getQuestion());
             }
-
-            //submit button
-            submit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: set up pager adapter
-                }
-            });
+            //TODO: parse
         }
     }
 

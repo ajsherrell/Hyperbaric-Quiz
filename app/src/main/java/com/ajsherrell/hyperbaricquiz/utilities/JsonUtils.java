@@ -66,9 +66,8 @@ public class JsonUtils {
 
         // declare local vars for json
         JSONObject jsonObject;
-        String title;
+        List<String> title;
         String id = null;
-        List<String> array;
         String question = null;
         List<String> options = null;
         String answer = null;
@@ -78,23 +77,12 @@ public class JsonUtils {
 
             //get the base object
             JSONObject main = jsonObject.getJSONObject(TITLE);
-            title = main.optString(TITLE);
+            title = jsonArrayList(main.getJSONArray(TITLE));
 
-            // switch statement to find array category
-            switch (title) {
-                case PHYSICS:
-                    array = jsonArrayList(main.getJSONArray(PHYSICS));
-                    break;
-                case PRESSURE:
-                    array = jsonArrayList(main.getJSONArray(PRESSURE));
-                    break;
-                default:
-                    return null;
-            }
             //loop through array
-            for (int i = 0; i < array.size(); i++) {
+            for (int i = 0; i < title.size(); i++) {
                 // get optStrings
-                JSONObject obj = new JSONObject(array.get(i));
+                JSONObject obj = new JSONObject(title.get(i));
                 id = obj.optString(ID);
                 question = obj.optString(QUESTION);
                 answer = obj.optString(ANSWER);
