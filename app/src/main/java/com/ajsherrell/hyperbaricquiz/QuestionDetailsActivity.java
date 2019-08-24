@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.ajsherrell.hyperbaricquiz.adapter.QuestionsFragmentPagerAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
@@ -30,9 +31,9 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     //the pager adapter reference
     ViewPager quizViewPager;
 
-    private List<QuizContent> quizContent;
-    private QuizContent content;
+    private List<QuizContent> content;
     private int questionSelected;
+    private String name;
 
     private Button submitButton;
     private Button nextButton;
@@ -43,6 +44,10 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_detail);
+
+        for (int i = 0; i < content.size(); i++) {
+            name = String.valueOf(content.get(i).getTitle());
+        }
 
         quizViewPager = (ViewPager) findViewById(R.id.quiz_viewpager);
         submitButton = (Button) findViewById(R.id.submit_button);
@@ -78,13 +83,13 @@ public class QuestionDetailsActivity extends AppCompatActivity {
 
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(content.getTitle());
+            actionBar.setTitle(name);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey(LIST_KEY) && bundle.containsKey(LIST_ITEM_SELECTED)) {
-            content = content.getParcelable(LIST_KEY);
+            content = bundle.getParcelable(LIST_KEY);
             questionSelected = bundle.getInt(LIST_ITEM_SELECTED);
         } else {
             Log.d(TAG, "onCreate: bundle error!!!!!" + content);
@@ -104,7 +109,7 @@ public class QuestionDetailsActivity extends AppCompatActivity {
 
         //pager adapter implementation
         QuestionsFragmentPagerAdapter adapter = new QuestionsFragmentPagerAdapter(getApplicationContext(),
-                quizContent.get(0).getTitle(), getSupportFragmentManager());
+                Collections.singletonList(content.get(Integer.parseInt(name))), getSupportFragmentManager());
         quizViewPager.setAdapter(adapter);
         quizViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -115,7 +120,7 @@ public class QuestionDetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int i) {
                 if (actionBar != null) {
-                    actionBar.setTitle(quizContent.get(i).getTitle());
+                    actionBar.setTitle(name);
                 }
 
                 //change the buttons

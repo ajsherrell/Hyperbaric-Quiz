@@ -113,7 +113,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.ARG_ITEM_ID, quizContentList.get(position));
+            args.putParcelable(QuestionDetailsFragment.LIST_KEY, quizContentList.get(position));
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()

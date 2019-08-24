@@ -72,11 +72,9 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
-        QuizContent content = quizList.get(position);
-        holder.titleTextView.setText(content.getTitle());
-        String cTitle = content.getTitle(position);
-        //TODO: get image array above, or add them to JSON
+    public void onBindViewHolder(@NonNull QuizViewHolder holder, final int position) {
+        holder.titleTextView.setText((CharSequence) quizList.get(position).getTitle());
+        String cTitle = (String) holder.titleTextView.getText();
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(cTitle)));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
             Picasso.with(mContext)
