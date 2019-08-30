@@ -2,9 +2,9 @@ package com.ajsherrell.hyperbaricquiz.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.ajsherrell.hyperbaricquiz.QuestionDetailsFragment;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
@@ -25,7 +25,7 @@ public class QuestionsFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         Bundle args = new Bundle();
-        args.putParcelable(QuestionDetailsFragment.ARG_ITEM_ID, contents.get(i));
+        args.putParcelable(QuestionDetailsFragment.LIST_KEY, contents.get(i));
         QuestionDetailsFragment fragment = new QuestionDetailsFragment();
         fragment.setArguments(args);
         return fragment;

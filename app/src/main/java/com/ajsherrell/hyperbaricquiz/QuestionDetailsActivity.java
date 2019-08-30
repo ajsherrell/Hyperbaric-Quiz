@@ -2,13 +2,13 @@ package com.ajsherrell.hyperbaricquiz;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+import androidx.viewpager.widget.ViewPager;
 
 public class QuestionDetailsActivity extends AppCompatActivity {
 
@@ -94,18 +95,6 @@ public class QuestionDetailsActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "onCreate: bundle error!!!!!" + content);
         }
-//        if (savedInstanceState == null) {
-//            //create detail fragment and add it to the activity
-//            // using a fragment transaction
-//            Bundle arguments = new Bundle();
-//            arguments.putString(QuestionDetailsFragment.ARG_ITEM_ID,
-//                    getIntent().getStringExtra(QuestionDetailsFragment.ARG_ITEM_ID));
-//            QuestionDetailsFragment fragment = new QuestionDetailsFragment();
-//            fragment.setArguments(arguments);
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.question_detail_container, fragment)
-//                    .commit();
-//        }
 
         //pager adapter implementation
         QuestionsFragmentPagerAdapter adapter = new QuestionsFragmentPagerAdapter(getApplicationContext(),
