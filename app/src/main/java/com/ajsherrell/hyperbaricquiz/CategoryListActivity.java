@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -37,9 +39,6 @@ public class CategoryListActivity extends AppCompatActivity {
     //model var
     private  List<QuizContent> quizContentList;
 
-    //adapter reference
-    QuizAdapter adapter;
-
     Parcelable mSavedRecyclerLayout;
 
     //recycler
@@ -49,6 +48,7 @@ public class CategoryListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         //bundle to save place
         Bundle listBundle = getIntent().getExtras();
@@ -60,8 +60,6 @@ public class CategoryListActivity extends AppCompatActivity {
             finish();
         }
 
-        setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
@@ -72,7 +70,7 @@ public class CategoryListActivity extends AppCompatActivity {
             //two pane logic with savedInstanceState.
             if (savedInstanceState != null) {
                 mSavedRecyclerLayout = savedInstanceState.getParcelable(CATEGORY_KEY);
-                listRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayout);
+                Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
             }
             if (savedInstanceState == null && !quizContentList.isEmpty()) {
                 makeList(0);
@@ -89,6 +87,7 @@ public class CategoryListActivity extends AppCompatActivity {
         listRecyclerView = findViewById(R.id.image_rv);
         assert  listRecyclerView != null;
         setupRecyclerView(listRecyclerView);
+        Log.d(TAG, "onCreate: RV!!!!!" + listRecyclerView);
     }
 
     @Override
@@ -107,6 +106,7 @@ public class CategoryListActivity extends AppCompatActivity {
                 makeList(position);
             }
         }));
+        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView);
     }
 
     //intent method with bundle.
@@ -125,6 +125,7 @@ public class CategoryListActivity extends AppCompatActivity {
             intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, position);
             startActivity(intent);
         }
+        Log.d(TAG, "makeList: this is !!!! position " + position);
     }
 
     // menu
