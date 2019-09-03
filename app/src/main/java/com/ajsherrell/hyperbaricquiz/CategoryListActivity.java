@@ -51,14 +51,14 @@ public class CategoryListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //bundle to save place
-        Bundle listBundle = getIntent().getExtras();
-        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
-            quizContentList = listBundle.getParcelable(CATEGORY_KEY);
-        } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
-                    Toast.LENGTH_LONG).show();
-            finish();
-        }
+//        Bundle listBundle = getIntent().getExtras();
+//        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
+//            quizContentList = listBundle.getParcelable(CATEGORY_KEY);
+//        } else {
+//            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
+//                    Toast.LENGTH_LONG).show();
+//            finish();
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,9 +104,10 @@ public class CategoryListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 makeList(position);
+                Log.d(TAG, "onItemClick:!!! position is " + position);
             }
         }));
-        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView);
+        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + quizContentList);
     }
 
     //intent method with bundle.
