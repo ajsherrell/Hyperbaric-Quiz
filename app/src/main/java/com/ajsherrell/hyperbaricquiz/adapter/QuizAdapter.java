@@ -26,12 +26,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     private Context mContext;
     private List<QuizContent> quizList;
 
-    // need a click listener interface
-    public static final class ClickListener {
-        public interface OnItemClickListener {
-            void onItemClick(int position);
-        }
-    }
 
     private ClickListener.OnItemClickListener onItemClickListener;
 
