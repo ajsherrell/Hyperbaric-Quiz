@@ -14,7 +14,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
+import com.ajsherrell.hyperbaricquiz.adapter.TitleAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +39,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private boolean twoPane;
 
     //model var
-    private  List<QuizContent> quizContentList;
+    private  List<Titles> titles;
 
     Parcelable mSavedRecyclerLayout;
 
@@ -51,14 +53,14 @@ public class CategoryListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //bundle to save place
-//        Bundle listBundle = getIntent().getExtras();
-//        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
-//            quizContentList = listBundle.getParcelable(CATEGORY_KEY);
-//        } else {
-//            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
-//                    Toast.LENGTH_LONG).show();
-//            finish();
-//        }
+        Bundle listBundle = getIntent().getExtras();
+        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
+            titles = listBundle.getParcelable(CATEGORY_KEY);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
+                    Toast.LENGTH_LONG).show();
+            finish();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,7 +74,7 @@ public class CategoryListActivity extends AppCompatActivity {
                 mSavedRecyclerLayout = savedInstanceState.getParcelable(CATEGORY_KEY);
                 Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
             }
-            if (savedInstanceState == null && !quizContentList.isEmpty()) {
+            if (savedInstanceState == null && !titles.isEmpty()) {
                 makeList(0);
             }
         }
@@ -100,21 +102,21 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new QuizAdapter(getApplicationContext(), quizContentList, new QuizAdapter.ClickListener.OnItemClickListener() {
+        recyclerView.setAdapter(new TitleAdapter(getApplicationContext(), titles, new TitleAdapter.ClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 makeList(position);
                 Log.d(TAG, "onItemClick:!!! position is " + position);
             }
         }));
-        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + quizContentList);
+        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + titles);
     }
 
     //intent method with bundle.
     private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.LIST_KEY, quizContentList.get(position));
+            args.putParcelable(QuestionDetailsFragment.LIST_KEY, titles.get(position));
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
@@ -122,7 +124,7 @@ public class CategoryListActivity extends AppCompatActivity {
                     .commit();
         } else {
             Intent intent = new Intent(this, QuestionDetailsActivity.class);
-            intent.putExtra(QuestionDetailsActivity.LIST_KEY, (Parcelable) quizContentList);
+            intent.putExtra(QuestionDetailsActivity.LIST_KEY, (Parcelable) titles);
             intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, position);
             startActivity(intent);
         }
@@ -169,6 +171,7 @@ public class CategoryListActivity extends AppCompatActivity {
         return columns;
     }
 
+    // SAVE FOR LATER
     // referenced https://stackoverflow.com/questions/1560788/how-to-check-internet-access-on-android-inetaddress-never-times-out
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

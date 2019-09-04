@@ -13,7 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:listitem="@layout/question_detail"
         tools:context=".QuestionDetailsActivity"
-        android:id="@+id/recycler_view"
+        android:id="@+id/question_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
