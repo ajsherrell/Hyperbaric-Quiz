@@ -15,6 +15,7 @@ import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         RecyclerView recyclerView;
         TextView idTv;
         TextView questionTv;
-        List<String> options;
         RadioButton optionA;
         RadioButton optionB;
         RadioButton optionC;
@@ -47,10 +47,10 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
             recyclerView = view.findViewById(R.id.question_recycler_view);
             idTv = view.findViewById(R.id.id);
             questionTv = view.findViewById(R.id.question);
-            //TODO: options??
             optionA = view.findViewById(R.id.radio_A);
             optionB = view.findViewById(R.id.radio_B);
             optionC = view.findViewById(R.id.radio_C);
+            answer = view.findViewById(R.id.answer);
         }
 
     }
@@ -65,9 +65,16 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, final int position) {
+        holder.idTv.setText(quizList.get(position).getId());
+        holder.questionTv.setText(quizList.get(position).getQuestion());
+        holder.answer.setText(quizList.get(position).getAnswer());
 
-        }
-
+        List<String> optionsArr;
+        optionsArr = quizList.get(position).getOptions();
+        Collections.shuffle(optionsArr);
+        holder.optionA.setText(optionsArr.get(0));
+        holder.optionB.setText(optionsArr.get(1));
+        holder.optionC.setText(optionsArr.get(2));
     }
 
     @Override

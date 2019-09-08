@@ -33,6 +33,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/question_one" />
 
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:text="@string/correct_answer" />
+
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="304dp"

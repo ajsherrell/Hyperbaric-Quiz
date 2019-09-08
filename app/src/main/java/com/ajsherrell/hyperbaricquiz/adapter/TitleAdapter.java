@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ajsherrell.hyperbaricquiz.Constants;
 import com.ajsherrell.hyperbaricquiz.R;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.ajsherrell.hyperbaricquiz.model.Titles;
@@ -23,22 +24,14 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHolder> {
 
     private static final String TAG = TitleAdapter.class.getSimpleName();
+    private QuizContent content;
     private Context context;
-    private List<Titles> titles;
 
-    // need a click listener interface
-    public static final class ClickListener {
-        public interface OnItemClickListener {
-            void onItemClick(int position);
-        }
-    }
+    private Constants.ClickListener.OnItemClickListener onItemClickListener;
 
-    private ClickListener.OnItemClickListener onItemClickListener;
-
-    public TitleAdapter(Context context, List<Titles> titles,
-                        ClickListener.OnItemClickListener onItemClickListener) {
-        this.context = context;
-        this.titles = titles;
+    public TitleAdapter(QuizContent content,
+                        Constants.ClickListener.OnItemClickListener onItemClickListener) {
+        this.content = content;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -51,9 +44,8 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TitleAdapter.TitleViewHolder holder, int position) {
-        holder.titleTv.setText(titles.get(position).getTitle());
-
+    public void onBindViewHolder(@NonNull TitleAdapter.TitleViewHolder holder, final int position) {
+        holder.titleTv.setText(content.getTitle().get(position).getTitle());
         String categoryTitle = (String) holder.titleTv.getText();
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
@@ -63,20 +55,27 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
                     .error(R.drawable.ic_stat_name)
                     .into(holder.imageView);
         }
+        holder.recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) onItemClickListener.onItemClick(position);
+            }
+        });
         Log.d(TAG, "onBindViewHolder: !!!this is the category image from title adapter" + CATEGORY_IMAGE);
     }
 
     @Override
     public int getItemCount() {
-        return titles == null ? 0 : titles.size();
+        return content == null ? 0 : content.getTitle().size();
     }
 
-    public void add(List<Titles> data) {
-        this.titles = data;
+    public void add(QuizContent data) {
+        this.content = data;
+        notifyDataSetChanged();
     }
 
     public void clear() {
-        titles.clear();;
+        content.getTitle().clear();
     }
 
     public class TitleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -94,7 +93,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            onItemClickListener.onItemClick(titles.indexOf(position));
+            onItemClickListener.onItemClick(content.getTitle().indexOf(position));
             Log.d(TAG, "onClick: !!!in title adapter at position " + position);
         }
     }

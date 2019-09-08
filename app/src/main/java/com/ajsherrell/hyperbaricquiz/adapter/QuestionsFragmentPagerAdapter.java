@@ -2,26 +2,29 @@ package com.ajsherrell.hyperbaricquiz.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.ajsherrell.hyperbaricquiz.QuestionDetailsFragment;
-import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import java.util.List;
 
 public class QuestionsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private Context context;
-    private List<QuizContent> contents;
+    private List<Titles> contents;
 
-    public QuestionsFragmentPagerAdapter(Context context, List<QuizContent> contents, FragmentManager fm) {
+    public QuestionsFragmentPagerAdapter(Context context, List<Titles> contents, FragmentManager fm) {
         super(fm);
         this.context = context;
         this.contents = contents;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int i) {
         Bundle args = new Bundle();

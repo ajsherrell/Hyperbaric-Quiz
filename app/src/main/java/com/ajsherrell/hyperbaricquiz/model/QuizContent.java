@@ -8,7 +8,7 @@ import java.util.List;
 
 public class QuizContent implements Parcelable {
 
-    private List<String> mTitle;
+    private List<Titles> mTitle;
     private String mId;
     private String mQuestion;
     private List<String> mOptions;
@@ -19,7 +19,7 @@ public class QuizContent implements Parcelable {
      */
     public QuizContent() {}
 
-    public QuizContent(List<String> title, String id, String question, List<String> options, String answer) {
+    public QuizContent(List<Titles> title, String id, String question, List<String> options, String answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
@@ -62,11 +62,11 @@ public class QuizContent implements Parcelable {
     }
 
 
-    public List<String> getTitle() {
+    public List<Titles> getTitle() {
         return mTitle;
     }
 
-    public void setTitle(List<String> title) {
+    public void setTitle(List<Titles> title) {
         this.mTitle = title;
     }
 

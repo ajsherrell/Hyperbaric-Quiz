@@ -28,8 +28,6 @@ public class QuestionDetailsFragment extends Fragment {
     // fragment ID
     public static final String LIST_KEY = "list_key";
     public static final String LIST_ITEM_SELECTED = "list_item_selected";
-    //public static final String ARG_ITEM_ID = "item_id";
-    public static final String ITEM_POSITION = "item_position";
 
     private long currentPosition = 0;
     int score;
@@ -38,6 +36,7 @@ public class QuestionDetailsFragment extends Fragment {
     private TextView id;
     private TextView question;
     private String answer;
+    private TextView answerTv;
     private Button submit;
     private boolean isCorrect = false;
     private int listItemSelected;
@@ -70,13 +69,14 @@ public class QuestionDetailsFragment extends Fragment {
             quizContentList = getArguments().getParcelable(LIST_KEY);
         }
 
-        populateUI();
-
         id = (TextView) view.findViewById(R.id.id);
         question = (TextView) view.findViewById(R.id.question);
         radioButtonA = (RadioButton) view.findViewById(R.id.radio_A);
         radioButtonB = (RadioButton) view.findViewById(R.id.radio_B);
         radioButtonC = (RadioButton) view.findViewById(R.id.radio_C);
+        answerTv = (TextView) view.findViewById(R.id.answer);
+
+        populateUI();
 
         if (savedInstanceState != null && savedInstanceState.containsKey(LIST_ITEM_SELECTED)) {
             currentPosition = savedInstanceState.getLong(LIST_ITEM_SELECTED);
@@ -104,7 +104,9 @@ public class QuestionDetailsFragment extends Fragment {
                     radioButtonB.setText(optionArr.get(1));
                     radioButtonC.setText(optionArr.get(2));
                 }
+                answer = quizContentList.get(i).getAnswer();
                 if (answer != null) {
+                    answerTv.setText(answer);
                     answer = quizContentList.get(i).getAnswer();
                     if (answer == radioButtonA.getText()) {
                         isCorrect = true;

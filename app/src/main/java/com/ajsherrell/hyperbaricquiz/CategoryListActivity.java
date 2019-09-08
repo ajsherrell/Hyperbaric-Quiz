@@ -39,7 +39,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private boolean twoPane;
 
     //model var
-    private  List<Titles> titles;
+    private QuizContent content;
 
     Parcelable mSavedRecyclerLayout;
 
@@ -55,7 +55,7 @@ public class CategoryListActivity extends AppCompatActivity {
         //bundle to save place
         Bundle listBundle = getIntent().getExtras();
         if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
-            titles = listBundle.getParcelable(CATEGORY_KEY);
+            content = listBundle.getParcelable(CATEGORY_KEY);
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
                     Toast.LENGTH_LONG).show();
@@ -74,7 +74,7 @@ public class CategoryListActivity extends AppCompatActivity {
                 mSavedRecyclerLayout = savedInstanceState.getParcelable(CATEGORY_KEY);
                 Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
             }
-            if (savedInstanceState == null && !titles.isEmpty()) {
+            if (savedInstanceState == null && !content.getTitle().isEmpty()) {
                 makeList(0);
             }
         }
@@ -84,7 +84,7 @@ public class CategoryListActivity extends AppCompatActivity {
         //If this view is present, then the activity should be in twoPane mode
         if (findViewById(R.id.question_detail_container) != null) {
             twoPane = true;
-        }
+        } //TODO: should this if statement go into QuestionDetails?
 
         listRecyclerView = findViewById(R.id.image_rv);
         assert  listRecyclerView != null;
@@ -102,21 +102,21 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new TitleAdapter(getApplicationContext(), titles, new TitleAdapter.ClickListener.OnItemClickListener() {
+        recyclerView.setAdapter(new TitleAdapter(content, new Constants.ClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 makeList(position);
                 Log.d(TAG, "onItemClick:!!! position is " + position);
             }
         }));
-        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + titles);
+        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + content);
     }
 
     //intent method with bundle.
     private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.LIST_KEY, titles.get(position));
+            args.putParcelable(QuestionDetailsFragment.LIST_KEY, content.getTitle().get(position));
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
@@ -124,7 +124,7 @@ public class CategoryListActivity extends AppCompatActivity {
                     .commit();
         } else {
             Intent intent = new Intent(this, QuestionDetailsActivity.class);
-            intent.putExtra(QuestionDetailsActivity.LIST_KEY, (Parcelable) titles);
+            intent.putExtra(QuestionDetailsActivity.LIST_KEY, (Parcelable) content);
             intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, position);
             startActivity(intent);
         }

@@ -15,9 +15,11 @@ import android.widget.Button;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuestionsFragmentPagerAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.RequiresApi;
 import androidx.viewpager.widget.ViewPager;
@@ -32,7 +34,7 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     //the pager adapter reference
     ViewPager quizViewPager;
 
-    private List<QuizContent> content;
+    private List<Titles> titles;
     private int questionSelected;
     private String name;
 
@@ -46,8 +48,8 @@ public class QuestionDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_detail);
 
-        for (int i = 0; i < content.size(); i++) {
-            name = String.valueOf(content.get(i).getTitle());
+        for (int i = 0; i < titles.size(); i++) {
+            name = String.valueOf(titles.get(i).getTitle());
         }
 
         quizViewPager = (ViewPager) findViewById(R.id.quiz_viewpager);
@@ -90,15 +92,15 @@ public class QuestionDetailsActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey(LIST_KEY) && bundle.containsKey(LIST_ITEM_SELECTED)) {
-            content = bundle.getParcelable(LIST_KEY);
+            titles = bundle.getParcelable(LIST_KEY);
             questionSelected = bundle.getInt(LIST_ITEM_SELECTED);
         } else {
-            Log.d(TAG, "onCreate: bundle error!!!!!" + content);
+            Log.d(TAG, "onCreate: bundle error!!!!!" + titles);
         }
 
         //pager adapter implementation
         QuestionsFragmentPagerAdapter adapter = new QuestionsFragmentPagerAdapter(getApplicationContext(),
-                Collections.singletonList(content.get(Integer.parseInt(name))), getSupportFragmentManager());
+                Collections.singletonList(titles.get(Integer.parseInt(name))), getSupportFragmentManager());
         quizViewPager.setAdapter(adapter);
         quizViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -118,7 +120,7 @@ public class QuestionDetailsActivity extends AppCompatActivity {
                 } else {
                     previousButton.setVisibility(View.VISIBLE);
                 }
-                if (i < quizViewPager.getAdapter().getCount() - 1) {
+                if (i < Objects.requireNonNull(quizViewPager.getAdapter()).getCount() - 1) {
                     nextButton.setVisibility(View.VISIBLE);
                 } else {
                     nextButton.setVisibility(View.GONE);
