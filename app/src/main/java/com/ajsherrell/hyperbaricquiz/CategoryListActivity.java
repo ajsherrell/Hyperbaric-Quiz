@@ -132,7 +132,7 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new TitleAdapter(content, new Constants.ClickListener.OnItemClickListener() {
+        recyclerView.setAdapter(new TitleAdapter((QuizContent) content, new Constants.ClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 makeList(position);

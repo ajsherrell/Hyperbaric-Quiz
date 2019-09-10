@@ -86,4 +86,8 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         this.quizList = data;
         notifyDataSetChanged();
     }
+
+    public void clear() {
+        quizList.clear();
+    }
 }
