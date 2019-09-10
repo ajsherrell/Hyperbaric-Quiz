@@ -4,9 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class QuizContent implements Parcelable {
+public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
     private List<Titles> mTitle;
     private String mId;

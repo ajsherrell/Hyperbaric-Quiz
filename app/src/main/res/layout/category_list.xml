@@ -10,3 +10,4 @@
     tools:listitem="@layout/category_list_content"
     tools:context=".CategoryListActivity" />
 
+

@@ -15,13 +15,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class JsonUtils {
-
-    Context mContext;
 
     private static final String TAG = JsonUtils.class.getSimpleName();
 
@@ -40,12 +37,12 @@ public class JsonUtils {
 
     // extract JSON from Assets folder with help from:
     //https://stackoverflow.com/questions/19945411/android-java-how-can-i-parse-a-local-json-file-from-assets-folder-into-a-listvi/19945484#19945484
-    public String loadJSONFromAsset() {
+    public static String loadJSONFromAsset(String fileName, Context context) {
 
         String json = null;
         try {
-            AssetManager assetManager = (AssetManager) mContext.getAssets();
-            InputStream is = assetManager.open("QuizData.json");
+            AssetManager assetManager = (AssetManager) context.getAssets();
+            InputStream is = assetManager.open(fileName);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -59,7 +56,7 @@ public class JsonUtils {
     }
 
     //parse the JSON
-    public static QuizContent parseJson(String quizJson) {
+    public static ArrayList<QuizContent> parseJson(String quizJson) {
 
         // if the JSON string is empty or null, then return early
         if (TextUtils.isEmpty(quizJson)) {

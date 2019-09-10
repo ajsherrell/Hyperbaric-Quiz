@@ -4,21 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcelable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.adapter.TitleAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
-import com.ajsherrell.hyperbaricquiz.model.Titles;
+import com.ajsherrell.hyperbaricquiz.utilities.JsonUtils;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -32,19 +36,26 @@ public class CategoryListActivity extends AppCompatActivity {
 
     private static final String TAG = CategoryListActivity.class.getSimpleName();
 
+    private Context context;
+
     //key for intents
     public static final String CATEGORY_KEY = "category_key";
 
     // booleans
     private boolean twoPane;
 
+    //adapter
+    private QuizAdapter adapter;
+
     //model var
-    private QuizContent content;
+    private ArrayList<QuizContent> content;
 
     Parcelable mSavedRecyclerLayout;
 
+    private static final String BUNDLE_RECYCLER_LAYOUT = "CategoryListActivity.listRecyclerView.category_list";
+
     //recycler
-    RecyclerView listRecyclerView;
+    private static RecyclerView listRecyclerView;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -66,18 +77,26 @@ public class CategoryListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        if (savedInstanceState != null) {
+            mSavedRecyclerLayout = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
+            Log.d(TAG, "onCreate: onRestoreState!!! " + savedInstanceState);
+        }
+
         //two pane devices
         twoPane = getResources().getBoolean(R.bool.isTwoPane);
         if (twoPane) {
             //two pane logic with savedInstanceState.
             if (savedInstanceState != null) {
-                mSavedRecyclerLayout = savedInstanceState.getParcelable(CATEGORY_KEY);
+                mSavedRecyclerLayout = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
                 Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
+                Log.d(TAG, "onCreate: onRestoreState!!! " + savedInstanceState);
             }
-            if (savedInstanceState == null && !content.getTitle().isEmpty()) {
+            if (savedInstanceState == null && !content.isEmpty()) {
                 makeList(0);
             }
         }
+
 
         //The detail container view will be present only in the
         //large-screen layouts (res/w900dp).
@@ -90,6 +109,17 @@ public class CategoryListActivity extends AppCompatActivity {
         assert  listRecyclerView != null;
         setupRecyclerView(listRecyclerView);
         Log.d(TAG, "onCreate: RV!!!!!" + listRecyclerView);
+
+        // execute asyncTask
+        QuizTask task = new QuizTask();
+        task.execute();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, Objects.requireNonNull(listRecyclerView.getLayoutManager()).onSaveInstanceState());
     }
 
     @Override
@@ -116,7 +146,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.LIST_KEY, content.getTitle().get(position));
+            args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content.get(position).getTitle());
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
@@ -131,8 +161,46 @@ public class CategoryListActivity extends AppCompatActivity {
         Log.d(TAG, "makeList: this is !!!! position " + position);
     }
 
-    // menu
+    //asyncTask
+    public class QuizTask extends AsyncTask<String, Void, ArrayList<QuizContent>> {
 
+        @Override
+        protected ArrayList<QuizContent> doInBackground(String... strings) {
+            if (strings.length ==0) {
+                return null;
+            }
+            String qContent = JsonUtils.loadJSONFromAsset("QuizData.json", context);
+
+            try {
+                 content = JsonUtils.parseJson(qContent);
+                 return content;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<QuizContent> data) {
+            adapter.clear();
+            if (content != null) {
+                content = data;
+                adapter.add(data);
+                listRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayout);
+            } else {
+                Log.d(TAG, "onPostExecute: !!! data is " + data);
+            }
+            adapter.notifyDataSetChanged();
+            super.onPostExecute(data);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    // menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate the menu; this adds items to the action bar if it is present.
