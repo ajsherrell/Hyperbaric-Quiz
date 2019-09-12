@@ -97,6 +97,8 @@ public class CategoryListActivity extends AppCompatActivity {
             }
         }
 
+        Log.d(TAG, "onCreate: !!! this content is " + content);
+
 
         //The detail container view will be present only in the
         //large-screen layouts (res/w900dp).
@@ -166,13 +168,15 @@ public class CategoryListActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<QuizContent> doInBackground(String... strings) {
+            Log.d(TAG, "doInBackground: !!! strings is " + strings);
             if (strings.length ==0) {
                 return null;
             }
-            String qContent = JsonUtils.loadJSONFromAsset("QuizData.json", context);
-
+            String qContent = JsonUtils.loadJSONFromAsset("assets/QuizData.json", context);
+            Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
                  content = JsonUtils.parseJson(qContent);
+                Log.d(TAG, "doInBackground: content is !!! " + content);
                  return content;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -180,13 +184,15 @@ public class CategoryListActivity extends AppCompatActivity {
             }
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         protected void onPostExecute(ArrayList<QuizContent> data) {
+            Log.d(TAG, "onPostExecute: !!! adapter is " + adapter);
             adapter.clear();
             if (content != null) {
                 content = data;
                 adapter.add(data);
-                listRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayout);
+                Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
             } else {
                 Log.d(TAG, "onPostExecute: !!! data is " + data);
             }

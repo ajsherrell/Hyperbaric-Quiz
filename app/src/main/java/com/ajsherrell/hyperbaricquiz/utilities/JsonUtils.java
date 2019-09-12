@@ -70,6 +70,7 @@ public class JsonUtils {
         String question = null;
         List<String> options = null;
         String answer = null;
+        Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
             jsonObject = new JSONObject(quizJson);
@@ -86,6 +87,7 @@ public class JsonUtils {
                 question = obj.optString(QUESTION);
                 answer = obj.optString(ANSWER);
                 options = jsonArrayList(obj.getJSONArray(OPTIONS));
+                Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
             }
 
 
