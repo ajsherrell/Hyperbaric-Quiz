@@ -9,18 +9,24 @@ import java.util.List;
 
 public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
-    private List<Titles> mTitle;
+    private List<String> mTitle;
     private String mId;
     private String mQuestion;
     private List<String> mOptions;
     private String mAnswer;
 
-    /**
-     * No args constructor for use in serialization
-     */
+    //empty constructor
     public QuizContent() {}
 
-    public QuizContent(List<Titles> title, String id, String question, List<String> options, String answer) {
+    /**
+     * No args constructor for use in serialization
+     * @param title
+     * @param id
+     * @param question
+     * @param options
+     * @param answer
+     */
+    public QuizContent(List<String> title, String id, String question, List<String> options, String answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
@@ -63,11 +69,11 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
     }
 
 
-    public List<Titles> getTitle() {
+    public List<String> getTitle() {
         return mTitle;
     }
 
-    public void setTitle(List<Titles> title) {
+    public void setTitle(List<String> title) {
         this.mTitle = title;
     }
 

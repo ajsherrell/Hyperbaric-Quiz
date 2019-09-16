@@ -134,11 +134,11 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new TitleAdapter((QuizContent) content, new Constants.ClickListener.OnItemClickListener() {
+        recyclerView.setAdapter(new QuizAdapter(context, content, new Constants.ClickListener.OnItemClickListener(){
             @Override
             public void onItemClick(int position) {
                 makeList(position);
-                Log.d(TAG, "onItemClick:!!! position is " + position);
+                Log.d(TAG, "onItemClick: !!! position is " +position);
             }
         }));
         Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + content);
@@ -172,14 +172,15 @@ public class CategoryListActivity extends AppCompatActivity {
             if (strings.length ==0) {
                 return null;
             }
-            String qContent = JsonUtils.loadJSONFromAsset("assets/QuizData.json", context);
+            String qContent = JsonUtils.loadJSONFromAsset("QuizData.json", context);
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
-                 content = JsonUtils.parseJson(qContent);
+                content = JsonUtils.parseJson(qContent);
                 Log.d(TAG, "doInBackground: content is !!! " + content);
-                 return content;
+                return content;
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, "doInBackground: !!! in exception here " + e);
                 return null;
             }
         }

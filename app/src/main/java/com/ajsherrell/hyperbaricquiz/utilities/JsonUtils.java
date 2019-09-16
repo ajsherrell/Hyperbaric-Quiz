@@ -56,38 +56,57 @@ public class JsonUtils {
     }
 
     //parse the JSON
-    public static ArrayList<QuizContent> parseJson(String quizJson) {
-
+    public static ArrayList<QuizContent> parseJson(String quizJson) throws JSONException {
+        ArrayList<QuizContent> list = new ArrayList<>();
         // if the JSON string is empty or null, then return early
         if (TextUtils.isEmpty(quizJson)) {
             return null;
         }
 
         // declare local vars for json
-        JSONObject jsonObject;
-        List<Titles> title;
+        JSONObject jsonObject = new JSONObject(quizJson);
+        List<String> title = new ArrayList<>();
+        JSONArray titleArr = null;
         String id = null;
         String question = null;
         List<String> options = null;
         String answer = null;
+        String physics = null;
+        String pressure = null;
         Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
-            jsonObject = new JSONObject(quizJson);
+            titleArr = jsonObject.getJSONArray(TITLE);
+            Log.d(TAG, "parseJson: !!! this is TITLE " + TITLE);
+            for (int j = 0; j < titleArr.length(); j++) {
+                JSONObject categoriesObject = titleArr.getJSONObject(j);
+                physics = categoriesObject.getString(PHYSICS);
+                pressure = categoriesObject.getString(PRESSURE);
 
-            //get the base object
-            JSONObject main = jsonObject.getJSONObject(TITLE);
-            title = titleArrayList(main.getJSONArray(TITLE));
+                title.add(physics);
+                title.add(pressure);
 
-            //loop through array
-            for (int i = 0; i < title.size(); i++) {
-                // get optStrings
-                JSONObject obj = new JSONObject(String.valueOf(title.get(i)));
-                id = obj.optString(ID);
-                question = obj.optString(QUESTION);
-                answer = obj.optString(ANSWER);
-                options = jsonArrayList(obj.getJSONArray(OPTIONS));
-                Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
+                JSONArray catArray = new JSONArray(String.valueOf(categoriesObject));
+                //loop through array
+                for (int i = 0; i < catArray.length(); i++) {
+                    // get optStrings
+                    JSONObject obj = new JSONObject(String.valueOf(catArray.get(i)));
+                    id = obj.optString(ID);
+                    question = obj.optString(QUESTION);
+                    answer = obj.optString(ANSWER);
+                    options = jsonArrayList(obj.getJSONArray(OPTIONS));
+                    Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
+
+                    //store the json items in variables
+                    QuizContent content = new QuizContent();
+                    content.setTitle(title);
+                    content.setId(id);
+                    content.setQuestion(question);
+                    content.setAnswer(answer);
+                    content.setOptions(options);
+
+                    list.add(content);
+                }
             }
 
 
@@ -96,7 +115,7 @@ public class JsonUtils {
             e.printStackTrace();
             return null;
         }
-        return new QuizContent(title, id, question, options, answer);
+        return list;
     }
 
     private static List<String> jsonArrayList(JSONArray jsonArray) throws JSONException {
@@ -111,16 +130,16 @@ public class JsonUtils {
         return arrayList;
     }
 
-    private static List<Titles> titleArrayList(JSONArray jsonArray) throws JSONException {
-        // declare arrayList from 0th index
-        List<Titles> arrayList = new ArrayList<>(0);
-
-        // loop through array
-        for (int i = 0; i < jsonArray.length(); i++) {
-            arrayList.add((Titles) jsonArray.opt(i));
-        }
-
-        return arrayList;
-    }
+//    private static List<Titles> titleArrayList(JSONArray jsonArray) throws JSONException {
+//        // declare arrayList from 0th index
+//        List<Titles> arrayList = new ArrayList<>(0);
+//
+//        // loop through array
+//        for (int i = 0; i < jsonArray.length(); i++) {
+//            arrayList.add((Titles) jsonArray.opt(i));
+//        }
+//
+//        return arrayList;
+//    }
 
 }

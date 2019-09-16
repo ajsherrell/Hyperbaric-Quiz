@@ -45,7 +45,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TitleAdapter.TitleViewHolder holder, final int position) {
-        holder.titleTv.setText(content.getTitle().get(position).getTitle());
+        holder.titleTv.setText(content.getTitle().get(position));
         String categoryTitle = (String) holder.titleTv.getText();
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {

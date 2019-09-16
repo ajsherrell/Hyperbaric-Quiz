@@ -34,7 +34,7 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     //the pager adapter reference
     ViewPager quizViewPager;
 
-    private List<Titles> titles;
+    private List<QuizContent> titles;
     private int questionSelected;
     private String name;
 

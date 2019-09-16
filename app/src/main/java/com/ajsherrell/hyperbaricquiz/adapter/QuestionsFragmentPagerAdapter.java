@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.ajsherrell.hyperbaricquiz.QuestionDetailsFragment;
+import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
 public class QuestionsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private Context context;
-    private List<Titles> contents;
+    private List<QuizContent> contents;
 
-    public QuestionsFragmentPagerAdapter(Context context, List<Titles> contents, FragmentManager fm) {
+    public QuestionsFragmentPagerAdapter(Context context, List<QuizContent> contents, FragmentManager fm) {
         super(fm);
         this.context = context;
         this.contents = contents;
