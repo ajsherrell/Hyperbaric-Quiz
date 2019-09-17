@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.ajsherrell.hyperbaricquiz.Constants;
 import com.ajsherrell.hyperbaricquiz.R;
-import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.ajsherrell.hyperbaricquiz.model.Titles;
 import com.squareup.picasso.Picasso;
 
@@ -24,12 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHolder> {
 
     private static final String TAG = TitleAdapter.class.getSimpleName();
-    private QuizContent content;
+    private List<Titles> content;
     private Context context;
 
     private Constants.ClickListener.OnItemClickListener onItemClickListener;
 
-    public TitleAdapter(QuizContent content,
+    public TitleAdapter(List<Titles> content,
                         Constants.ClickListener.OnItemClickListener onItemClickListener) {
         this.content = content;
         this.onItemClickListener = onItemClickListener;
@@ -45,7 +44,8 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TitleAdapter.TitleViewHolder holder, final int position) {
-        holder.titleTv.setText(content.getTitle().get(position));
+        Titles titles = content.get(position);
+        holder.titleTv.setText(titles.getTitle());
         String categoryTitle = (String) holder.titleTv.getText();
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
         if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
@@ -66,22 +66,22 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
 
     @Override
     public int getItemCount() {
-        return content == null ? 0 : content.getTitle().size();
+        return content == null ? 0 : content.size();
     }
 
-    public void add(QuizContent data) {
+    public void add(ArrayList<Titles> data) {
         this.content = data;
         notifyDataSetChanged();
     }
 
     public void clear() {
-        content.getTitle().clear();
+        content.clear();
     }
 
     public class TitleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView recyclerView;
         ImageView imageView;
-        public TextView titleTv;
+        TextView titleTv;
 
         public TitleViewHolder(@NonNull View v) {
             super(v);
@@ -93,7 +93,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            onItemClickListener.onItemClick(content.getTitle().indexOf(position));
+            onItemClickListener.onItemClick(position);
             Log.d(TAG, "onClick: !!!in title adapter at position " + position);
         }
     }

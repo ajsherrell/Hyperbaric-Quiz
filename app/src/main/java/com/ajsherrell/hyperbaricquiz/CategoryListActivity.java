@@ -138,7 +138,7 @@ public class CategoryListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 makeList(position);
-                Log.d(TAG, "onItemClick: !!! position is " +position);
+                Log.d(TAG, "onItemClick: !!! position is " + position);
             }
         }));
         Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + content);
