@@ -56,13 +56,13 @@ public class JsonUtils {
     }
 
     //parse the JSON
-    public static ArrayList<QuizContent> parseJson(String quizJson) throws JSONException {
+    public static ArrayList<QuizContent> parseQuizJson(String quizJson) throws JSONException {
         ArrayList<QuizContent> list = new ArrayList<>();
         // if the JSON string is empty or null, then return early
         if (TextUtils.isEmpty(quizJson)) {
             return null;
         }
-
+        // TODO: change the json again!!
         // declare local vars for json
         JSONObject jsonObject = new JSONObject(quizJson);
         List<String> title = new ArrayList<>();

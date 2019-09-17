@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.adapter.TitleAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+import com.ajsherrell.hyperbaricquiz.model.Titles;
 import com.ajsherrell.hyperbaricquiz.utilities.JsonUtils;
 
 import java.util.ArrayList;
@@ -44,11 +45,11 @@ public class CategoryListActivity extends AppCompatActivity {
     // booleans
     private boolean twoPane;
 
-    //adapter
-    private QuizAdapter adapter;
-
     //model var
-    private ArrayList<QuizContent> content;
+    private ArrayList<Titles> content;
+
+    //adapter
+    private TitleAdapter adapter;
 
     Parcelable mSavedRecyclerLayout;
 
@@ -134,11 +135,10 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new QuizAdapter(context, content, new Constants.ClickListener.OnItemClickListener(){
+        recyclerView.setAdapter(new TitleAdapter(content, new Constants.ClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 makeList(position);
-                Log.d(TAG, "onItemClick: !!! position is " + position);
             }
         }));
         Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + content);
@@ -175,7 +175,7 @@ public class CategoryListActivity extends AppCompatActivity {
             String qContent = JsonUtils.loadJSONFromAsset("QuizData.json", context);
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
-                content = JsonUtils.parseJson(qContent);
+                content = JsonUtils.parseQuizJson(qContent);
                 Log.d(TAG, "doInBackground: content is !!! " + content);
                 return content;
             } catch (Exception e) {
