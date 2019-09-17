@@ -1,29 +1,28 @@
-{
-  "title": [{
-    "physics": [
-      {
-        "id": 1,
-        "question": "This is a physics question?",
-        "options": [
-          "answerA",
-          "answerB",
-          "answerC"
-        ],
-        "answer": "answerB"
-      },
-      {
-        "id": 2,
-        "question": "This is a second physics question?",
-        "options": [
-          "answerA1",
-          "answerB2",
-          "answerC2"
-        ],
-        "answer": "answerA1"
-      }
-    ],
-    "pressure": [
-      {
+[
+    {
+      "title": "physics",
+      "id": 1,
+      "question": "This is a physics question?",
+      "options": [
+        "answerA",
+        "answerB",
+        "answerC"
+      ],
+      "answer": "answerB"
+    },
+    {
+      "title": "physics",
+      "id": 2,
+      "question": "This is a second physics question?",
+      "options": [
+        "answerA1",
+        "answerB2",
+        "answerC2"
+      ],
+      "answer": "answerA1"
+    },
+    {
+      "title": "pressure",
       "id": 1,
       "question": "This is question pressure?",
       "options": [
@@ -32,17 +31,16 @@
         "answer3"
       ],
         "answer": "answer2"
-    },
-      {
-        "id": 2,
-        "question": "This is pressure question 2",
-        "options": [
-          "answer1a",
-          "answer2a",
-          "answer3a"
-        ],
-        "answer": "answer3a"
-      }
-    ]
-  }]
-}
+  },
+    {
+      "title": "pressure",
+      "id": 2,
+      "question": "This is pressure question 2",
+      "options": [
+        "answer1a",
+        "answer2a",
+        "answer3a"
+      ],
+      "answer": "answer3a"
+    }
+  ]

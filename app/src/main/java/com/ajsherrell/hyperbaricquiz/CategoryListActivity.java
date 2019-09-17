@@ -148,7 +148,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private void makeList(int position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content.get(position).getTitle());
+            args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content.get(position));
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()

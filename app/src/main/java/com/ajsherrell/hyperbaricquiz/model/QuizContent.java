@@ -9,7 +9,7 @@ import java.util.List;
 
 public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
-    private List<String> mTitle;
+    private String mTitle;
     private String mId;
     private String mQuestion;
     private List<String> mOptions;
@@ -26,7 +26,7 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
      * @param options
      * @param answer
      */
-    public QuizContent(List<String> title, String id, String question, List<String> options, String answer) {
+    public QuizContent(String title, String id, String question, List<String> options, String answer) {
         this.mTitle = title;
         this.mId = id;
         this.mQuestion = question;
@@ -35,7 +35,7 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
     }
 
     protected QuizContent(Parcel in) {
-        in.readList(mTitle, QuizContent.class.getClassLoader());
+        mTitle = in.readString();
         mId = in.readString();
         mQuestion = in.readString();
         in.readList(mOptions, QuizContent.class.getClassLoader());
@@ -61,7 +61,7 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(mTitle);
+        dest.writeString(mTitle);
         dest.writeString(mId);
         dest.writeString(mQuestion);
         dest.writeList(mOptions);
@@ -69,11 +69,11 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
     }
 
 
-    public List<String> getTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setTitle(List<String> title) {
+    public void setTitle(String title) {
         this.mTitle = title;
     }
 

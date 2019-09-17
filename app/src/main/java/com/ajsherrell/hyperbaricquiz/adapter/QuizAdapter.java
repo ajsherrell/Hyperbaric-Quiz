@@ -76,13 +76,15 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, final int position) {
-        holder.titleTv.setText(quizList.get(position).getTitle().get(position));
-        holder.idTv.setText(quizList.get(position).getId());
-        holder.questionTv.setText(quizList.get(position).getQuestion());
-        holder.answer.setText(quizList.get(position).getAnswer());
+        QuizContent content = quizList.get(position);
+
+        holder.titleTv.setText(content.getTitle());
+        holder.idTv.setText(content.getId());
+        holder.questionTv.setText(content.getQuestion());
+        holder.answer.setText(content.getAnswer());
 
         List<String> optionsArr;
-        optionsArr = quizList.get(position).getOptions();
+        optionsArr = content.getOptions();
         Collections.shuffle(optionsArr);
         holder.optionA.setText(optionsArr.get(0));
         holder.optionB.setText(optionsArr.get(1));
@@ -124,10 +126,10 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     public int getImage(int image) {
         String category = null;
         switch (category) {
-            case "Physics":
+            case "physics":
                 image = R.drawable.physics;
                 break;
-            case "Pressure":
+            case "pressure":
                 image = R.drawable.pressure;
                 break;
             default:
