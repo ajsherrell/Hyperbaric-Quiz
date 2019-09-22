@@ -9,6 +9,7 @@ import java.util.List;
 
 public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
+    private List<Titles> mTitles;
     private String mId;
     private String mQuestion;
     private List<String> mOptions;
@@ -24,7 +25,8 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
      * @param options
      * @param answer
      */
-    public QuizContent(String id, String question, List<String> options, String answer) {
+    public QuizContent(List<Titles> titles, String id, String question, List<String> options, String answer) {
+        this.mTitles = titles;
         this.mId = id;
         this.mQuestion = question;
         this.mOptions = options;
@@ -32,6 +34,7 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
     }
 
     protected QuizContent(Parcel in) {
+        in.readList(mTitles, Titles.class.getClassLoader()); //TODO: is this right?
         mId = in.readString();
         mQuestion = in.readString();
         in.readList(mOptions, QuizContent.class.getClassLoader());
@@ -57,10 +60,19 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(mTitles);
         dest.writeString(mId);
         dest.writeString(mQuestion);
         dest.writeList(mOptions);
         dest.writeString(mAnswer);
+    }
+
+    public List<Titles> getTitles() {
+        return mTitles;
+    }
+
+    public void setTitles(List<Titles> titles) {
+        this.mTitles = titles;
     }
 
     public String getId() {

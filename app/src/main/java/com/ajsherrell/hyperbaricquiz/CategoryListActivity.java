@@ -46,7 +46,8 @@ public class CategoryListActivity extends AppCompatActivity {
     private boolean twoPane;
 
     //model var
-    private ArrayList<Titles> content;
+    private ArrayList<QuizContent> content;
+    private ArrayList<Titles> titlesArrayList
 
     //adapter
     private TitleAdapter adapter;
@@ -135,7 +136,7 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new TitleAdapter(content, new Constants.ClickListener.OnItemClickListener() {
+        recyclerView.setAdapter(new TitleAdapter(context, titlesArrayList, new Constants.ClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 makeList(position);
@@ -187,11 +188,11 @@ public class CategoryListActivity extends AppCompatActivity {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        protected void onPostExecute(ArrayList<QuizContent> data) {
+        protected void onPostExecute(ArrayList<Titles> data) {
             Log.d(TAG, "onPostExecute: !!! adapter is " + adapter);
             adapter.clear();
             if (content != null) {
-                content = data;
+                titlesArrayList = data;
                 adapter.add(data);
                 Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
             } else {

@@ -64,9 +64,9 @@ public class JsonUtils {
         }
         // TODO: change the json again!!
         // declare local vars for json
-        JSONObject jsonObject = new JSONObject(quizJson);
-        List<String> title = new ArrayList<>();
-        JSONArray titleArr = null;
+        JSONArray baseJsonArray;
+        String title = null;
+        ArrayList<Titles> titlesArrayList = new ArrayList<>();
         String id = null;
         String question = null;
         List<String> options = null;
@@ -76,39 +76,36 @@ public class JsonUtils {
         Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
-            titleArr = jsonObject.getJSONArray(TITLE);
-            Log.d(TAG, "parseJson: !!! this is TITLE " + TITLE);
-            for (int j = 0; j < titleArr.length(); j++) {
-                JSONObject categoriesObject = titleArr.getJSONObject(j);
-                physics = categoriesObject.getString(PHYSICS);
-                pressure = categoriesObject.getString(PRESSURE);
+            //loop through array
+            baseJsonArray = new JSONArray(quizJson);
+            for (int i = 0; i < baseJsonArray.length(); i++) {
+                JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
+                title = obj.optString(TITLE);
+                id = obj.optString(ID);
+                question = obj.optString(QUESTION);
+                answer = obj.optString(ANSWER);
+                options = jsonArrayList(obj.getJSONArray(OPTIONS));
+                Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
 
-                title.add(physics);
-                title.add(pressure);
-
-                JSONArray catArray = new JSONArray(String.valueOf(categoriesObject));
-                //loop through array
-                for (int i = 0; i < catArray.length(); i++) {
-                    // get optStrings
-                    JSONObject obj = new JSONObject(String.valueOf(catArray.get(i)));
-                    id = obj.optString(ID);
-                    question = obj.optString(QUESTION);
-                    answer = obj.optString(ANSWER);
-                    options = jsonArrayList(obj.getJSONArray(OPTIONS));
-                    Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
-
-                    //store the json items in variables
-                    QuizContent content = new QuizContent();
-                    content.setTitle(title);
-                    content.setId(id);
-                    content.setQuestion(question);
-                    content.setAnswer(answer);
-                    content.setOptions(options);
-
-                    list.add(content);
+                String[] Tstring = null;
+                //TODO make title
+                if (title.equals(PHYSICS)) {
+                    titlesArrayList.toArray(new String[]{title});
                 }
-            }
+                if (title.equals(PRESSURE)) {
+                    titlesArrayList.toArray(new String[]{title});
+                }
 
+                //store the json items in variables
+                QuizContent content = new QuizContent();
+                content.setTitles(titlesArrayList);
+                content.setId(id);
+                content.setQuestion(question);
+                content.setAnswer(answer);
+                content.setOptions(options);
+
+                list.add(content);
+            }
 
         } catch (JSONException e) {
             Log.d(TAG, "parseJson: not able to parse JSON!!!!!" + quizJson);

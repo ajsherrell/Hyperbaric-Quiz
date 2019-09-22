@@ -28,8 +28,9 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
 
     private Constants.ClickListener.OnItemClickListener onItemClickListener;
 
-    public TitleAdapter(List<Titles> content,
+    public TitleAdapter(Context context, List<Titles> content,
                         Constants.ClickListener.OnItemClickListener onItemClickListener) {
+        this.context = context;
         this.content = content;
         this.onItemClickListener = onItemClickListener;
     }
