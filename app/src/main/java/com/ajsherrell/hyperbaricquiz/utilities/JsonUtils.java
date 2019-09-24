@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
-import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +65,6 @@ public class JsonUtils {
         // declare local vars for json
         JSONArray baseJsonArray;
         String title = null;
-        ArrayList<Titles> titlesArrayList = new ArrayList<>();
         String id = null;
         String question = null;
         List<String> options = null;
@@ -87,18 +85,9 @@ public class JsonUtils {
                 options = jsonArrayList(obj.getJSONArray(OPTIONS));
                 Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
 
-                String[] Tstring = null;
-                //TODO make title
-                if (title.equals(PHYSICS)) {
-                    titlesArrayList.toArray(new String[]{title});
-                }
-                if (title.equals(PRESSURE)) {
-                    titlesArrayList.toArray(new String[]{title});
-                }
-
                 //store the json items in variables
                 QuizContent content = new QuizContent();
-                content.setTitles(titlesArrayList);
+                content.setTitle(title);
                 content.setId(id);
                 content.setQuestion(question);
                 content.setAnswer(answer);
@@ -126,17 +115,5 @@ public class JsonUtils {
 
         return arrayList;
     }
-
-//    private static List<Titles> titleArrayList(JSONArray jsonArray) throws JSONException {
-//        // declare arrayList from 0th index
-//        List<Titles> arrayList = new ArrayList<>(0);
-//
-//        // loop through array
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//            arrayList.add((Titles) jsonArray.opt(i));
-//        }
-//
-//        return arrayList;
-//    }
 
 }
