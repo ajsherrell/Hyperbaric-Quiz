@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,14 +47,16 @@ public class CategoryListActivity extends AppCompatActivity {
     private boolean twoPane;
 
     //model var
-    private ArrayList<QuizContent> content;
+    private ArrayList<QuizContent> content = new ArrayList<>();
 
     //adapter
     private QuizAdapter adapter;
 
+    private Constants.ClickListener.OnItemClickListener onItemClickListener;
+
     Parcelable mSavedRecyclerLayout;
 
-    private static final String BUNDLE_RECYCLER_LAYOUT = "CategoryListActivity.listRecyclerView.category_list";
+    private static final String BUNDLE_RECYCLER_LAYOUT = "CategoryListActivity.listRecyclerView.activity_main";
 
     //recycler
     private static RecyclerView listRecyclerView;
@@ -65,14 +68,14 @@ public class CategoryListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //bundle to save place
-        Bundle listBundle = getIntent().getExtras();
-        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
-            content = listBundle.getParcelable(CATEGORY_KEY);
-        } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
-                    Toast.LENGTH_LONG).show();
-            finish();
-        }
+//        Bundle listBundle = getIntent().getExtras();
+//        if (listBundle != null && listBundle.containsKey(CATEGORY_KEY)) {
+//            content = listBundle.getParcelable(CATEGORY_KEY);
+//        } else {
+//            Toast.makeText(getApplicationContext(), getString(R.string.load_failure),
+//                    Toast.LENGTH_LONG).show();
+//            finish();
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -108,10 +111,13 @@ public class CategoryListActivity extends AppCompatActivity {
             twoPane = true;
         } //TODO: should this if statement go into QuestionDetails?
 
+        adapter = new QuizAdapter(context, content, onItemClickListener);
+
         listRecyclerView = findViewById(R.id.image_rv);
         assert  listRecyclerView != null;
         setupRecyclerView(listRecyclerView);
         Log.d(TAG, "onCreate: RV!!!!!" + listRecyclerView);
+        listRecyclerView.setOnClickListener((View.OnClickListener) onItemClickListener);
 
         // execute asyncTask
         QuizTask task = new QuizTask();
@@ -135,12 +141,7 @@ public class CategoryListActivity extends AppCompatActivity {
         GridLayoutManager categoryLayoutManager = new GridLayoutManager(this, numColumns());
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new QuizAdapter(context, content, new Constants.ClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                makeList(position);
-            }
-        }));
+        recyclerView.setAdapter(adapter);
         Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + content);
     }
 
@@ -169,10 +170,15 @@ public class CategoryListActivity extends AppCompatActivity {
         @Override
         protected ArrayList<QuizContent> doInBackground(String... strings) {
             Log.d(TAG, "doInBackground: !!! strings is " + strings);
-            if (strings.length ==0) {
+            if (strings.length == 0) {
                 return null;
             }
-            String qContent = JsonUtils.loadJSONFromAsset("QuizData.json", context);
+            String qContent = strings[0];
+            //String qContent = strings[0];
+            //String qContent = JsonUtils.loadJSONFromAsset(context);
+
+            // get json string from resources
+            //String[] jsonString = getResources().getString(R.id.json);
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
                 content = JsonUtils.parseQuizJson(qContent);

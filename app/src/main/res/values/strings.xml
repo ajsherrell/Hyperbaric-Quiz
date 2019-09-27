@@ -26,4 +26,8 @@
     <!-- The class name to the ScrollingChildBehavior required for AppBarLayout -->
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="correct_answer">Correct Answer</string>
+
+    <string name="json">
+        "[{\"title\":\"physics\",\"id\":1,\"question\":\"This is a physics question?\",\"options\":[\"answerA\",\"answerB\",\"answerC\"],\"answer\":\"answerB\"},{\"title\":\"physics\",\"id\":2,\"question\":\"This is a second physics question?\",\"options\":[\"answerA1\",\"answerB2\",\"answerC2\"],\"answer\":\"answerA1\"},{\"title\":\"pressure\",\"id\":1,\"question\":\"This is question pressure?\",\"options\":[\"answer1\",\"answer2\",\"answer3\"],\"answer\":\"answer2\"},{\"title\":\"pressure\",\"id\":2,\"question\":\"This is pressure question 2\",\"options\":[\"answer1a\",\"answer2a\",\"answer3a\"],\"answer\":\"answer3a\"}]"
+    </string>
 </resources>

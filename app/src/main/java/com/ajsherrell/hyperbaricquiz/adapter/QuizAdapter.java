@@ -38,36 +38,22 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         this.onItemClickListener = onItemClickListener;
     }
 
-    class QuizViewHolder extends RecyclerView.ViewHolder {
-        RecyclerView recyclerView;
+    class QuizViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTv;
-        TextView idTv;
-        TextView questionTv;
-        RadioButton optionA;
-        RadioButton optionB;
-        RadioButton optionC;
-        TextView answer;
         ImageView imageView;
 
         public QuizViewHolder(View view) {
             super(view);
-            recyclerView = view.findViewById(R.id.image_rv);
             titleTv = view.findViewById(R.id.category_list_tv);
-//            idTv = view.findViewById(R.id.id);
-//            questionTv = view.findViewById(R.id.question);
-//            optionA = view.findViewById(R.id.radio_A);
-//            optionB = view.findViewById(R.id.radio_B);
-//            optionC = view.findViewById(R.id.radio_C);
-//            answer = view.findViewById(R.id.answer);
             imageView = view.findViewById(R.id.category_image);
         }
 
-//        @Override
-//        public void onClick(View v) {
-//            int position = getAdapterPosition();
-//            onItemClickListener.onItemClick(position);
-//            Log.d(TAG, "onClick: !!!in title adapter at position " + position);
-//        }
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            onItemClickListener.onItemClick(position);
+            Log.d(TAG, "onClick: !!!in title adapter at position " + position);
+        }
 
     }
 
@@ -84,16 +70,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         QuizContent content = quizList.get(position);
 
         holder.titleTv.setText(content.getTitle());
-//        holder.idTv.setText(content.getId());
-//        holder.questionTv.setText(content.getQuestion());
-//        holder.answer.setText(content.getAnswer());
-        //TODO: should the rest of these be here other than title?
-//        List<String> optionsArr;
-//        optionsArr = content.getOptions();
-//        Collections.shuffle(optionsArr);
-//        holder.optionA.setText(optionsArr.get(0));
-//        holder.optionB.setText(optionsArr.get(1));
-//        holder.optionC.setText(optionsArr.get(2));
 
         String categoryTitle = (String) holder.titleTv.getText();
         String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
@@ -104,12 +80,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
                     .error(R.drawable.ic_stat_name)
                     .into(holder.imageView);
         }
-        holder.itemView.recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) onItemClickListener.onItemClick(position);
-            }
-        });
         Log.d(TAG, "onBindViewHolder: !!!this is the category image from quiz adapter" + CATEGORY_IMAGE);
     }
 
@@ -144,21 +114,4 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         return image; //TODO: test image log.
     }
 
-    //get titles
-//    public List<String[]> getTitleArr(List title) {
-//        String category = null;
-//        switch (category) {
-//            case "physics":
-//                title.toArray(new String[]{category});//TODO: fix this.
-//                break;
-//            case "pressure":
-//                title.toArray(new String[]{category});
-//                break;
-//            default:
-//                Log.d(TAG, "getTitleArr: this is the title array " + title);
-//                return null;
-//        }
-//        return title;
-//
-//    }
 }

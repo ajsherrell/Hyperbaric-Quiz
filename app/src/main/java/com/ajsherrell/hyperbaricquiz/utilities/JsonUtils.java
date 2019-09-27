@@ -18,6 +18,7 @@ import java.util.List;
 
 
 public class JsonUtils {
+    private static Context context;
 
     private static final String TAG = JsonUtils.class.getSimpleName();
 
@@ -25,7 +26,7 @@ public class JsonUtils {
     private JsonUtils() {}
 
     // json constants
-    private final static String TITLE = "titles";
+    private final static String TITLE = "title";
     private final static String PHYSICS = "physics";
     private final static String PRESSURE = "pressure";
     private final static String ID = "id";
@@ -36,12 +37,13 @@ public class JsonUtils {
 
     // extract JSON from Assets folder with help from:
     //https://stackoverflow.com/questions/19945411/android-java-how-can-i-parse-a-local-json-file-from-assets-folder-into-a-listvi/19945484#19945484
-    public static String loadJSONFromAsset(String fileName, Context context) {
+    public static String loadJSONFromAsset(Context context) {
 
         String json = null;
         try {
-            AssetManager assetManager = (AssetManager) context.getAssets();
-            InputStream is = assetManager.open(fileName);
+           // AssetManager assetManager = (AssetManager) context.getAssets();
+           // InputStream is = assetManager.open(fileName);
+            InputStream is = context.getAssets().open("QuizData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -74,8 +76,9 @@ public class JsonUtils {
         Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
+            JSONObject jsonObject = new JSONObject(loadJSONFromAsset(context));
             //loop through array
-            baseJsonArray = new JSONArray(quizJson);
+            baseJsonArray = jsonObject.getJSONArray(quizJson);
             for (int i = 0; i < baseJsonArray.length(); i++) {
                 JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
                 title = obj.optString(TITLE);
