@@ -13,15 +13,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
-import com.ajsherrell.hyperbaricquiz.adapter.TitleAdapter;
+import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter.QuizAdapterOnClickHandler;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
-import com.ajsherrell.hyperbaricquiz.model.Titles;
 import com.ajsherrell.hyperbaricquiz.utilities.JsonUtils;
 
 import java.util.ArrayList;
@@ -34,7 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryListActivity extends AppCompatActivity {
+public class CategoryListActivity extends AppCompatActivity implements QuizAdapterOnClickHandler {
 
     private static final String TAG = CategoryListActivity.class.getSimpleName();
 
@@ -51,8 +46,6 @@ public class CategoryListActivity extends AppCompatActivity {
 
     //adapter
     private QuizAdapter adapter;
-
-    private Constants.ClickListener.OnItemClickListener onItemClickListener;
 
     Parcelable mSavedRecyclerLayout;
 
@@ -97,7 +90,7 @@ public class CategoryListActivity extends AppCompatActivity {
                 Log.d(TAG, "onCreate: onRestoreState!!! " + savedInstanceState);
             }
             if (savedInstanceState == null && !content.isEmpty()) {
-                makeList(0);
+                makeList(content);
             }
         }
 
@@ -111,13 +104,12 @@ public class CategoryListActivity extends AppCompatActivity {
             twoPane = true;
         } //TODO: should this if statement go into QuestionDetails?
 
-        adapter = new QuizAdapter(context, content, onItemClickListener);
+        adapter = new QuizAdapter(context, content, this);
 
         listRecyclerView = findViewById(R.id.image_rv);
         assert  listRecyclerView != null;
         setupRecyclerView(listRecyclerView);
         Log.d(TAG, "onCreate: RV!!!!!" + listRecyclerView);
-        listRecyclerView.setOnClickListener((View.OnClickListener) onItemClickListener);
 
         // execute asyncTask
         QuizTask task = new QuizTask();
@@ -146,10 +138,10 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     //intent method with bundle.
-    private void makeList(int position) {
+    private void makeList(ArrayList<QuizContent> position) {
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content.get(position));
+            args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content);
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
@@ -163,6 +155,12 @@ public class CategoryListActivity extends AppCompatActivity {
         }
         Log.d(TAG, "makeList: this is !!!! position " + position);
     }
+
+    @Override
+    public void onClick(ArrayList<QuizContent> clickedCategory) {
+        makeList(content);
+    }
+
 
     //asyncTask
     public class QuizTask extends AsyncTask<String, Void, ArrayList<QuizContent>> {

@@ -7,16 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.ajsherrell.hyperbaricquiz.Constants;
 import com.ajsherrell.hyperbaricquiz.R;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -28,14 +25,17 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     private Context context;
     private List<QuizContent> quizList;
+    private QuizAdapterOnClickHandler clickHandler;
 
-    private Constants.ClickListener.OnItemClickListener onItemClickListener;
+    public interface QuizAdapterOnClickHandler {
+        void onClick(ArrayList<QuizContent> clickedCategory);
+    }
 
     public QuizAdapter(Context context, List<QuizContent> quizList,
-                       Constants.ClickListener.OnItemClickListener onItemClickListener) {
+                       QuizAdapterOnClickHandler clickHandler) {
         this.context = context;
         this.quizList = quizList;
-        this.onItemClickListener = onItemClickListener;
+        this.clickHandler = clickHandler;
     }
 
     class QuizViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -51,7 +51,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            onItemClickListener.onItemClick(position);
+            clickHandler.onClick(quizList.get(position));
             Log.d(TAG, "onClick: !!!in title adapter at position " + position);
         }
 

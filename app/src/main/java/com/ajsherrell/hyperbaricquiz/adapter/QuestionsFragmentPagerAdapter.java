@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.ajsherrell.hyperbaricquiz.QuestionDetailsFragment;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
-import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import java.util.List;
 

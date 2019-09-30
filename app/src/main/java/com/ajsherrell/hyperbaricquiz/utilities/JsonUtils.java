@@ -76,9 +76,8 @@ public class JsonUtils {
         Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
-            JSONObject jsonObject = new JSONObject(loadJSONFromAsset(context));
+            baseJsonArray = new JSONArray(loadJSONFromAsset(context));
             //loop through array
-            baseJsonArray = jsonObject.getJSONArray(quizJson);
             for (int i = 0; i < baseJsonArray.length(); i++) {
                 JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
                 title = obj.optString(TITLE);

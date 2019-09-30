@@ -15,7 +15,6 @@ import android.widget.Button;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuestionsFragmentPagerAdapter;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
-import com.ajsherrell.hyperbaricquiz.model.Titles;
 
 import java.util.Collections;
 import java.util.List;
