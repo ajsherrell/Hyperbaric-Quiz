@@ -179,7 +179,7 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
             //String[] jsonString = getResources().getString(R.id.json);
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
-                content = JsonUtils.parseQuizJson(qContent);
+                content = JsonUtils.parseQuizJson(context, qContent);
                 Log.d(TAG, "doInBackground: content is !!! " + content);
                 return content;
             } catch (Exception e) {
@@ -193,7 +193,7 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
         @Override
         protected void onPostExecute(ArrayList<QuizContent> data) {
             Log.d(TAG, "onPostExecute: !!! adapter is " + adapter);
-            adapter.clear();
+            //adapter.clear();
             if (content != null) {
                 content = data;
                 adapter.add(data);

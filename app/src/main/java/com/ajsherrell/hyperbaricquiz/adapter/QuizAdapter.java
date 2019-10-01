@@ -46,6 +46,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
             super(view);
             titleTv = view.findViewById(R.id.category_list_tv);
             imageView = view.findViewById(R.id.category_image);
+            view.setOnClickListener(this);
         }
 
         @Override
