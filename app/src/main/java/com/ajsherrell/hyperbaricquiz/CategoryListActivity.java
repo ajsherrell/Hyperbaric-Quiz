@@ -172,7 +172,6 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
                 return null;
             }
             String qContent = strings[0];
-            //String qContent = strings[0];
             //String qContent = JsonUtils.loadJSONFromAsset(context);
 
             // get json string from resources

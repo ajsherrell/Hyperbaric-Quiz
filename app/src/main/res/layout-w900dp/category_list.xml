@@ -8,8 +8,9 @@
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    android:showDividers="middle"
-    tools:context=".CategoryListActivity">
+    android:showDividers="middle">
+    <!--android:name="com.ajsherrell.hyperbaricquiz.CategoryListActivity"-->
+    <!--tools:context=".CategoryListActivity">-->
 
     <!--
     This layout is a two-pane layout for the Items
@@ -18,15 +19,11 @@
     -->
 
     <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:name="com.ajsherrell.hyperbaricquiz.CategoryListActivity"
         android:layout_marginLeft="@dimen/rv_margin"
         android:layout_marginRight="@dimen/rv_margin"
-        android:id="@+id/image_rv"
-        tools:listitem="@layout/category_list_content"
-        tools:context=".CategoryListActivity" />
+        android:id="@+id/image_rv" />
 
     <FrameLayout
         android:id="@+id/question_detail_container"
