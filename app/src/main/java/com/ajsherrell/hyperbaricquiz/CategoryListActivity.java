@@ -69,7 +69,7 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
 //                    Toast.LENGTH_LONG).show();
 //            finish();
 //        }
-
+        context = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
@@ -168,11 +168,11 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
         @Override
         protected ArrayList<QuizContent> doInBackground(String... strings) {
             Log.d(TAG, "doInBackground: !!! strings is " + strings);
-            if (strings.length == 0) {
-                return null;
-            }
-            String qContent = strings[0];
-            //String qContent = JsonUtils.loadJSONFromAsset(context);
+//            if (strings.length == 0) {
+//                return null;
+//            }
+            //String qContent = strings[0];
+            String qContent = JsonUtils.loadJSONFromAsset(context);
 
             // get json string from resources
             //String[] jsonString = getResources().getString(R.id.json);

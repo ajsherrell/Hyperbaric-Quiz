@@ -39,7 +39,7 @@ public class JsonUtils {
 
     // extract JSON from Assets folder with help from:
     //https://stackoverflow.com/questions/19945411/android-java-how-can-i-parse-a-local-json-file-from-assets-folder-into-a-listvi/19945484#19945484
-    public static String loadJSONFromAsset() {
+    public static String loadJSONFromAsset(Context context) {
 
         String json = null;
         try {
@@ -78,7 +78,7 @@ public class JsonUtils {
         Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
-            baseJsonArray = new JSONArray(loadJSONFromAsset());
+            baseJsonArray = new JSONArray(loadJSONFromAsset(context));
             //loop through array
             for (int i = 0; i < baseJsonArray.length(); i++) {
                 JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));

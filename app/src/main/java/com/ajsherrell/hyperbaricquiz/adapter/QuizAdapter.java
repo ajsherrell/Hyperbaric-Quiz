@@ -73,15 +73,15 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         holder.titleTv.setText(content.getTitle());
 
         String categoryTitle = (String) holder.titleTv.getText();
-        String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
-        if (!TextUtils.isEmpty(CATEGORY_IMAGE)) {
+        //String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
+        int imageResId = context.getResources().getIdentifier(categoryTitle, "drawable", context.getPackageName());
             Picasso.with(context)
-                    .load(CATEGORY_IMAGE.trim())
+                    .load(imageResId)
                     .placeholder(R.drawable.ic_stat_name)
                     .error(R.drawable.ic_stat_name)
                     .into(holder.imageView);
-        }
-        Log.d(TAG, "onBindViewHolder: !!!this is the category image from quiz adapter" + CATEGORY_IMAGE);
+
+        Log.d(TAG, "onBindViewHolder: !!!this is the category image from quiz adapter" + imageResId);
     }
 
     @Override
