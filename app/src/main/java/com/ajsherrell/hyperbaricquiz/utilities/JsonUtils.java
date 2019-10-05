@@ -8,6 +8,7 @@ import android.util.Log;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +69,7 @@ public class JsonUtils {
         // TODO: change the json again!!
         // declare local vars for json
         JSONArray baseJsonArray;
+        JsonObject baseJsonObject;
         String title = null;
         String id = null;
         String question = null;
