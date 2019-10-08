@@ -2,6 +2,7 @@ package com.ajsherrell.hyperbaricquiz.utilities;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
 
 
 public class JsonUtils {
@@ -60,7 +63,8 @@ public class JsonUtils {
     }
 
     //parse the JSON
-    public static ArrayList<QuizContent> parseQuizJson(Context context, String quizJson) throws JSONException {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static ArrayList<QuizContent> parseQuizJson(String quizJson) throws JSONException {
         ArrayList<QuizContent> list = new ArrayList<>();
         // if the JSON string is empty or null, then return early
         if (TextUtils.isEmpty(quizJson)) {
@@ -69,7 +73,7 @@ public class JsonUtils {
         // TODO: change the json again!!
         // declare local vars for json
         JSONArray baseJsonArray;
-        JsonObject baseJsonObject;
+        JSONObject baseJsonObject;
         String title = null;
         String id = null;
         String question = null;
@@ -80,26 +84,30 @@ public class JsonUtils {
         Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
 
         try {
-            baseJsonArray = new JSONArray(loadJSONFromAsset(context));
-            //loop through array
-            for (int i = 0; i < baseJsonArray.length(); i++) {
-                JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
-                title = obj.optString(TITLE);
-                id = obj.optString(ID);
-                question = obj.optString(QUESTION);
-                answer = obj.optString(ANSWER);
-                options = jsonArrayList(obj.getJSONArray(OPTIONS));
-                Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
+            baseJsonObject = new JSONObject(quizJson);
+            for (int j = 0; j < baseJsonObject.length(); j++) {
+                baseJsonArray = new JSONArray(baseJsonObject.getJSONArray(String.valueOf(j)));
 
-                //store the json items in variables
-                QuizContent content = new QuizContent();
-                content.setTitle(title);
-                content.setId(id);
-                content.setQuestion(question);
-                content.setAnswer(answer);
-                content.setOptions(options);
+                //loop through array
+                for (int i = 0; i < baseJsonArray.length(); i++) {
+                    JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
+                    title = obj.optString(TITLE);
+                    id = obj.optString(ID);
+                    question = obj.optString(QUESTION);
+                    answer = obj.optString(ANSWER);
+                    options = jsonArrayList(obj.getJSONArray(OPTIONS));
+                    Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
 
-                list.add(content);
+                    //store the json items in variables
+                    QuizContent content = new QuizContent();
+                    content.setTitle(title);
+                    content.setId(id);
+                    content.setQuestion(question);
+                    content.setAnswer(answer);
+                    content.setOptions(options);
+
+                    list.add(content);
+                }
             }
 
         } catch (JSONException e) {
