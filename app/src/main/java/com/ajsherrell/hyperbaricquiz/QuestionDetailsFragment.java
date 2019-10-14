@@ -93,7 +93,7 @@ public class QuestionDetailsFragment extends Fragment {
                 }
 
                 if (question != null) {
-                    question.setText(quizContentList.get(i).getQuestion());
+                    question.setText(quizContentList.get(i).getQuestionText());
                 }
 
                 if (quizContentList.get(i).getOptions() != null) {

@@ -19,8 +19,12 @@ import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter.QuizAdapterOnClickHandl
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.ajsherrell.hyperbaricquiz.utilities.JsonUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -173,10 +177,12 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
 
             String qContent = JsonUtils.loadJSONFromAsset(context);
 
+            Type collectionType = new TypeToken<Collection<QuizContent>>(){}.getType();
+
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
-                content = gson.fromJson(qContent, QuizContent.class);
-                Log.d(TAG, "doInBackground: content is !!! " + content);
+                Collection<QuizContent> colContent = gson.fromJson(qContent, collectionType);
+                Log.d(TAG, "doInBackground: colContent from GSON is !!! " + colContent);
                 return content;
             } catch (Exception e) {
                 e.printStackTrace();
