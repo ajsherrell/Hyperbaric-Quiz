@@ -18,6 +18,7 @@ import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter.QuizAdapterOnClickHandler;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.ajsherrell.hyperbaricquiz.utilities.JsonUtils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -168,11 +169,13 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         protected ArrayList<QuizContent> doInBackground(String... strings) {
+            Gson gson = new Gson();
+
             String qContent = JsonUtils.loadJSONFromAsset(context);
 
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
-                content = JsonUtils.parseQuizJson(qContent);
+                content = gson.fromJson(qContent, QuizContent.class);
                 Log.d(TAG, "doInBackground: content is !!! " + content);
                 return content;
             } catch (Exception e) {

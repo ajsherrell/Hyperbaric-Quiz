@@ -63,71 +63,71 @@ public class JsonUtils {
     }
 
     //parse the JSON
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static ArrayList<QuizContent> parseQuizJson(String quizJson) throws JSONException {
-        ArrayList<QuizContent> list = new ArrayList<>();
-        // if the JSON string is empty or null, then return early
-        if (TextUtils.isEmpty(quizJson)) {
-            return null;
-        }
-        // TODO: change the json again!!
-        // declare local vars for json
-        JSONArray baseJsonArray;
-        JSONObject baseJsonObject;
-        String title = null;
-        String id = null;
-        String question = null;
-        List<String> options = null;
-        String answer = null;
-        String physics = null;
-        String pressure = null;
-        Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
-
-        try {
-            baseJsonObject = new JSONObject(quizJson);
-            for (int j = 0; j < baseJsonObject.length(); j++) {
-                baseJsonArray = new JSONArray(baseJsonObject.getJSONArray(String.valueOf(j)));
-
-                //loop through array
-                for (int i = 0; i < baseJsonArray.length(); i++) {
-                    JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
-                    title = obj.optString(TITLE);
-                    id = obj.optString(ID);
-                    question = obj.optString(QUESTION);
-                    answer = obj.optString(ANSWER);
-                    options = jsonArrayList(obj.getJSONArray(OPTIONS));
-                    Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
-
-                    //store the json items in variables
-                    QuizContent content = new QuizContent();
-                    content.setTitle(title);
-                    content.setId(id);
-                    content.setQuestion(question);
-                    content.setAnswer(answer);
-                    content.setOptions(options);
-
-                    list.add(content);
-                }
-            }
-
-        } catch (JSONException e) {
-            Log.d(TAG, "parseJson: not able to parse JSON!!!!!" + quizJson);
-            e.printStackTrace();
-            return null;
-        }
-        return list;
-    }
-
-    private static List<String> jsonArrayList(JSONArray jsonArray) throws JSONException {
-        // declare arrayList from 0th index
-        List<String> arrayList = new ArrayList<>(0);
-
-        // loop through array
-        for (int i = 0; i < jsonArray.length(); i++) {
-            arrayList.add(jsonArray.optString(i));
-        }
-
-        return arrayList;
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    public static ArrayList<QuizContent> parseQuizJson(String quizJson) throws JSONException {
+//        ArrayList<QuizContent> list = new ArrayList<>();
+//        // if the JSON string is empty or null, then return early
+//        if (TextUtils.isEmpty(quizJson)) {
+//            return null;
+//        }
+//        // TODO: change the json again!!
+//        // declare local vars for json
+//        JSONArray baseJsonArray;
+//        JSONObject baseJsonObject;
+//        String title = null;
+//        String id = null;
+//        String question = null;
+//        List<String> options = null;
+//        String answer = null;
+//        String physics = null;
+//        String pressure = null;
+//        Log.d(TAG, "parseJson: !!! this is quizJson " + quizJson);
+//
+//        try {
+//            baseJsonObject = new JSONObject(quizJson);
+//            for (int j = 0; j < baseJsonObject.length(); j++) {
+//                baseJsonArray = new JSONArray(baseJsonObject.getJSONArray(String.valueOf(j)));
+//
+//                //loop through array
+//                for (int i = 0; i < baseJsonArray.length(); i++) {
+//                    JSONObject obj = new JSONObject(String.valueOf(baseJsonArray.getJSONObject(i)));
+//                    title = obj.optString(TITLE);
+//                    id = obj.optString(ID);
+//                    question = obj.optString(QUESTION);
+//                    answer = obj.optString(ANSWER);
+//                    options = jsonArrayList(obj.getJSONArray(OPTIONS));
+//                    Log.d(TAG, "parseJson: !!! This is QUESTION " + QUESTION);
+//
+//                    //store the json items in variables
+//                    QuizContent content = new QuizContent();
+//                    content.setTitle(title);
+//                    content.setId(id);
+//                    content.setQuestion(question);
+//                    content.setAnswer(answer);
+//                    content.setOptions(options);
+//
+//                    list.add(content);
+//                }
+//            }
+//
+//        } catch (JSONException e) {
+//            Log.d(TAG, "parseJson: not able to parse JSON!!!!!" + quizJson);
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return list;
+//    }
+//
+//    private static List<String> jsonArrayList(JSONArray jsonArray) throws JSONException {
+//        // declare arrayList from 0th index
+//        List<String> arrayList = new ArrayList<>(0);
+//
+//        // loop through array
+//        for (int i = 0; i < jsonArray.length(); i++) {
+//            arrayList.add(jsonArray.optString(i));
+//        }
+//
+//        return arrayList;
+//    }
 
 }
