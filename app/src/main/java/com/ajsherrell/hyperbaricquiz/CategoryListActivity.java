@@ -37,7 +37,7 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
     private Context context;
 
     //key for intents
-    public static final String CATEGORY_KEY = "category_key";
+   // public static final String CATEGORY_KEY = "category_key";
 
     // booleans
     private boolean twoPane;
