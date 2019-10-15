@@ -4,24 +4,47 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
 
+    @SerializedName("category")
+    @Expose
     private List<String> category;
+
+    @SerializedName("title")
+    @Expose
     private String title;
+
+    @SerializedName("questions")
+    @Expose
     private List<String> questions;
-    private String id;
+
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+
+    @SerializedName("questionText")
+    @Expose
     private String questionText;
+
+    @SerializedName("options")
+    @Expose
     private List<String> options;
+
+    @SerializedName("answer")
+    @Expose
     private String answer;
 
     //empty constructor
     public QuizContent() {}
 
     // constructor
-    public QuizContent(List<String> category, String title, List<String> questions, String id, String question, List<String> options, String answer) {
+    public QuizContent(List<String> category, String title, List<String> questions, int id, String question, List<String> options, String answer) {
         this.category = category;
         this.title = title;
         this.questions = questions;
@@ -35,7 +58,7 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
         in.readList(category, QuizContent.class.getClassLoader());
         title = in.readString();
         in.readList(questions, QuizContent.class.getClassLoader());
-        id = in.readString();
+        id = in.readInt();
         questionText = in.readString();
         in.readList(options, QuizContent.class.getClassLoader());
         answer = in.readString();
@@ -63,7 +86,7 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
         dest.writeList(category);
         dest.writeString(title);
         dest.writeList(questions);
-        dest.writeString(id);
+        dest.writeInt(id);
         dest.writeString(questionText);
         dest.writeList(options);
         dest.writeString(answer);
@@ -93,11 +116,11 @@ public class QuizContent extends ArrayList<QuizContent> implements Parcelable {
         this.questions = questions;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

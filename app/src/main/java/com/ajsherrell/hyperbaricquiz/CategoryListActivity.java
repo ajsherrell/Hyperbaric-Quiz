@@ -181,6 +181,7 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
 
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
+                //QuizContent colContent = gson.fromJson(qContent, QuizContent.class);
                 Collection<QuizContent> colContent = gson.fromJson(qContent, collectionType);
                 Log.d(TAG, "doInBackground: colContent from GSON is !!! " + colContent);
                 return content;
