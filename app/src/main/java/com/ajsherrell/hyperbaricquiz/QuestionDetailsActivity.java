@@ -14,7 +14,9 @@ import android.widget.Button;
 
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuestionsFragmentPagerAdapter;
+import com.ajsherrell.hyperbaricquiz.model.Category;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+import com.google.gson.Gson;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,10 +32,12 @@ public class QuestionDetailsActivity extends AppCompatActivity {
     public static final String LIST_KEY = "list_key";
     public static final String LIST_ITEM_SELECTED = "list_item_selected";
 
+    private Gson gson = new Gson();
+
     //the pager adapter reference
     ViewPager quizViewPager;
 
-    private List<QuizContent> titles;
+    private Category category;
     private int questionSelected;
     private String name;
 
@@ -47,8 +51,17 @@ public class QuestionDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_detail);
 
-        for (int i = 0; i < titles.size(); i++) {
-            name = String.valueOf(titles.get(i).getTitle());
+//        for (int i = 0; i < titles.size(); i++) {
+//            name = String.valueOf(titles.get(i).getTitle());
+//        }
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.containsKey(LIST_ITEM_SELECTED)) {
+            String jsonFromExtra = bundle.getString(LIST_ITEM_SELECTED);
+            category = gson.fromJson(jsonFromExtra, Category.class);
+            questionSelected = bundle.getInt(LIST_ITEM_SELECTED);
+        } else {
+            Log.d(TAG, "onCreate: bundle error!!!" + category);
         }
 
         quizViewPager = (ViewPager) findViewById(R.id.quiz_viewpager);
@@ -89,17 +102,9 @@ public class QuestionDetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.containsKey(LIST_KEY) && bundle.containsKey(LIST_ITEM_SELECTED)) {
-            titles = bundle.getParcelable(LIST_KEY);
-            questionSelected = bundle.getInt(LIST_ITEM_SELECTED);
-        } else {
-            Log.d(TAG, "onCreate: bundle error!!!!!" + titles);
-        }
-
         //pager adapter implementation
         QuestionsFragmentPagerAdapter adapter = new QuestionsFragmentPagerAdapter(getApplicationContext(),
-                Collections.singletonList(titles.get(Integer.parseInt(name))), getSupportFragmentManager());
+                category, getSupportFragmentManager());
         quizViewPager.setAdapter(adapter);
         quizViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

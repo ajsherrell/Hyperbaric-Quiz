@@ -14,7 +14,10 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.ajsherrell.hyperbaricquiz.model.Category;
+import com.ajsherrell.hyperbaricquiz.model.Question;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
+import com.google.gson.Gson;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +44,8 @@ public class QuestionDetailsFragment extends Fragment {
     private boolean isCorrect = false;
     private int listItemSelected;
 
+    private Gson gson = new Gson();
+
     //TODO: make code for correct answer
 
     //radios
@@ -48,7 +53,7 @@ public class QuestionDetailsFragment extends Fragment {
     private RadioButton radioButtonB;
     private RadioButton radioButtonC;
 
-    private List<QuizContent> quizContentList;
+    private Category category;
 
     public QuestionDetailsFragment() {
         // Required empty public constructor
@@ -66,7 +71,9 @@ public class QuestionDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_question_details, container, false);
 
         if (getArguments() != null && getArguments().containsKey(LIST_KEY)) {
-            quizContentList = getArguments().getParcelable(LIST_KEY);
+            //quizContentList = getArguments().getParcelable(LIST_KEY);
+            String categoryJsonFromExtra = getArguments().getString(LIST_KEY);
+            category = gson.fromJson(categoryJsonFromExtra, Category.class);
         }
 
         id = (TextView) view.findViewById(R.id.id);
@@ -85,29 +92,30 @@ public class QuestionDetailsFragment extends Fragment {
     }
 
     public void populateUI() {
-        for (int i = 0; i < quizContentList.size(); i++) {
-            Collections.shuffle(quizContentList);
-            if (quizContentList != null) {
+        List<Question> questionList = category.getQuestions();
+        for (int i = 0; i < questionList.size(); i++) {
+            Collections.shuffle(questionList);
+            if (questionList != null) {
                 if (id != null) {
-                    id.setText(quizContentList.get(i).getId());
+                    id.setText(questionList.get(i).getId());
                 }
 
                 if (question != null) {
-                    question.setText(quizContentList.get(i).getQuestionText());
+                    question.setText(questionList.get(i).getQuestionText());
                 }
 
-                if (quizContentList.get(i).getOptions() != null) {
+                if (questionList.get(i).getOptions() != null) {
                     List<String> optionArr;
-                    optionArr = quizContentList.get(i).getOptions();
+                    optionArr = questionList.get(i).getOptions();
                     Collections.shuffle(optionArr);
                     radioButtonA.setText(optionArr.get(0));
                     radioButtonB.setText(optionArr.get(1));
                     radioButtonC.setText(optionArr.get(2));
                 }
-                answer = quizContentList.get(i).getAnswer();
+                answer = questionList.get(i).getAnswer();
                 if (answer != null) {
                     answerTv.setText(answer);
-                    answer = quizContentList.get(i).getAnswer();
+                    answer = questionList.get(i).getAnswer();
                     if (answer == radioButtonA.getText()) {
                         isCorrect = true;
                     } else {

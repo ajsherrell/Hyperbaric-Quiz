@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter;
 import com.ajsherrell.hyperbaricquiz.adapter.QuizAdapter.QuizAdapterOnClickHandler;
+import com.ajsherrell.hyperbaricquiz.model.Category;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.ajsherrell.hyperbaricquiz.utilities.JsonUtils;
 import com.google.gson.Gson;
@@ -40,14 +41,14 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
 
     private Context context;
 
-    //key for intents
-   // public static final String CATEGORY_KEY = "category_key";
-
     // booleans
     private boolean twoPane;
 
     //model var
-    private ArrayList<QuizContent> content = new ArrayList<>();
+    private QuizContent mainQuizObject = new QuizContent();
+
+    //initiate gson
+    private Gson gson = new Gson();
 
     //adapter
     private QuizAdapter adapter;
@@ -94,12 +95,12 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
                 Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
                 Log.d(TAG, "onCreate: onRestoreState!!! " + savedInstanceState);
             }
-            if (savedInstanceState == null && !content.isEmpty()) {
-                makeList(content);
+            if (savedInstanceState == null && !mainQuizObject.getCategory().isEmpty()) {
+                //makeList(mainQuizObject);
             }
         }
 
-        Log.d(TAG, "onCreate: !!! this content is " + content);
+        Log.d(TAG, "onCreate: !!! this content is " + mainQuizObject.toString());
 
 
         //The detail container view will be present only in the
@@ -109,7 +110,7 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
             twoPane = true;
         } //TODO: should this if statement go into QuestionDetails?
 
-        adapter = new QuizAdapter(context, content, this);
+        adapter = new QuizAdapter(context, this, mainQuizObject);
 
         listRecyclerView = findViewById(R.id.image_rv);
         assert  listRecyclerView != null;
@@ -139,14 +140,15 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
         recyclerView.setLayoutManager(categoryLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + content);
+        Log.d(TAG, "setupRecyclerView: !!! rv is " + recyclerView + "quiz content is " + mainQuizObject.toString());
     }
 
     //intent method with bundle.
-    private void makeList(ArrayList<QuizContent> position) {
+    private void makeList(Category category) {
+        String categoryJson = gson.toJson(category, Category.class);
         if (twoPane) {
             Bundle args = new Bundle();
-            args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content);
+            //args.putParcelable(QuestionDetailsFragment.LIST_KEY, (Parcelable) content);
             QuestionDetailsFragment fragment = new QuestionDetailsFragment();
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
@@ -154,37 +156,35 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
                     .commit();
         } else {
             Intent intent = new Intent(this, QuestionDetailsActivity.class);
-            intent.putExtra(QuestionDetailsActivity.LIST_KEY, content);
-            intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, position);
+            //intent.putExtra(QuestionDetailsActivity.LIST_KEY, content);
+            intent.putExtra(QuestionDetailsActivity.LIST_ITEM_SELECTED, categoryJson);
             startActivity(intent);
         }
-        Log.d(TAG, "makeList: this is !!!! position " + position);
+        Log.d(TAG, "makeList: this is !!!! category " + category);
     }
 
     @Override
-    public void onClick(ArrayList<QuizContent> clickedCategory) {
-        makeList(content);
+    public void onClick(Category category) {
+        makeList(category);
     }
 
 
     //asyncTask
-    public class QuizTask extends AsyncTask<String, Void, ArrayList<QuizContent>> {
+    public class QuizTask extends AsyncTask<String, Void, QuizContent> {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        protected ArrayList<QuizContent> doInBackground(String... strings) {
+        protected QuizContent doInBackground(String... strings) {
             Gson gson = new Gson();
 
             String qContent = JsonUtils.loadJSONFromAsset(context);
 
-            Type collectionType = new TypeToken<Collection<QuizContent>>(){}.getType();
-
             Log.d(TAG, "doInBackground: !!! qContent is " + qContent);
             try {
-                //QuizContent colContent = gson.fromJson(qContent, QuizContent.class);
-                Collection<QuizContent> colContent = gson.fromJson(qContent, collectionType);
-                Log.d(TAG, "doInBackground: colContent from GSON is !!! " + colContent);
-                return content;
+                QuizContent quizContent = gson.fromJson(qContent, QuizContent.class);
+                Log.d(TAG, "doInBackground: quizContent from GSON is !!! " + quizContent);
+
+                return quizContent;
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "doInBackground: !!! in exception here " + e);
@@ -194,14 +194,14 @@ public class CategoryListActivity extends AppCompatActivity implements QuizAdapt
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        protected void onPostExecute(ArrayList<QuizContent> data) {
+        protected void onPostExecute(QuizContent data) {
             Log.d(TAG, "onPostExecute: !!! adapter is " + adapter);
-            if (content != null) {
-                content = data;
-                adapter.add(data);
+            if (mainQuizObject != null) {
+                mainQuizObject = data;
+                adapter.add(mainQuizObject);
                 Objects.requireNonNull(listRecyclerView.getLayoutManager()).onRestoreInstanceState(mSavedRecyclerLayout);
             } else {
-                Log.d(TAG, "onPostExecute: !!! data is " + data);
+                Log.d(TAG, "onPostExecute: !!! data is " + data.getCategory().get(0).getTitle());
             }
             adapter.notifyDataSetChanged();
             super.onPostExecute(data);

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ajsherrell.hyperbaricquiz.R;
+import com.ajsherrell.hyperbaricquiz.model.Category;
 import com.ajsherrell.hyperbaricquiz.model.QuizContent;
 import com.squareup.picasso.Picasso;
 
@@ -24,18 +25,18 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     private static final String TAG = QuizAdapter.class.getSimpleName();
 
     private Context context;
-    private List<QuizContent> quizList;
+    private QuizContent quizContent;
     private QuizAdapterOnClickHandler clickHandler;
 
     public interface QuizAdapterOnClickHandler {
-        void onClick(ArrayList<QuizContent> clickedCategory);
+        void onClick(Category category);
     }
 
-    public QuizAdapter(Context context, List<QuizContent> quizList,
-                       QuizAdapterOnClickHandler clickHandler) {
+    public QuizAdapter(Context context, QuizAdapterOnClickHandler clickHandler,
+                       QuizContent quizContent) {
         this.context = context;
-        this.quizList = quizList;
         this.clickHandler = clickHandler;
+        this.quizContent = quizContent;
     }
 
     class QuizViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -52,7 +53,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            clickHandler.onClick(quizList.get(position));
+            clickHandler.onClick(quizContent.getCategory().get(position));
             Log.d(TAG, "onClick: !!!in title adapter at position " + position);
         }
 
@@ -68,12 +69,10 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, final int position) {
-        QuizContent content = quizList.get(position);
+        String categoryTitle = quizContent.getCategory().get(position).getTitle();
 
-        holder.titleTv.setText(content.getTitle());
+        holder.titleTv.setText(categoryTitle);
 
-        String categoryTitle = (String) holder.titleTv.getText();
-        //String CATEGORY_IMAGE = String.valueOf(getImage(Integer.parseInt(categoryTitle)));
         int imageResId = context.getResources().getIdentifier(categoryTitle, "drawable", context.getPackageName());
             Picasso.with(context)
                     .load(imageResId)
@@ -86,33 +85,15 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
     @Override
     public int getItemCount() {
-        return quizList == null ? 0 : quizList.size();
+        return quizContent.getCategory() == null ? 0 : quizContent.getCategory().size();
     }
 
-    public void add(ArrayList<QuizContent> data) {
-        this.quizList = data;
+    public void add(QuizContent data) {
+        this.quizContent = data;
         notifyDataSetChanged();
     }
 
     public void clear() {
-        quizList.clear();
+        quizContent = new QuizContent();
     }
-
-    //get images by category
-    public int getImage(int image) {
-        String category = null;
-        switch (category) {
-            case "physics":
-                image = R.drawable.physics;
-                break;
-            case "pressure":
-                image = R.drawable.pressure;
-                break;
-            default:
-                Log.d(TAG, "getImage: no image!!!" + image);
-                return 0;
-        }
-        return image; //TODO: test image log.
-    }
-
 }
